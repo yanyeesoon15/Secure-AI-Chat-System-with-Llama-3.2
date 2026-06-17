@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Secure AI Chat System</title>
+    <style>
+        :root {
+            --bg-color: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --primary: #3B82F6;
+            --primary-hover: #2563EB;
+            --secondary: #8B5CF6;
+            --success: #10B981;
+            --success-bg: #D1FAE5;
+            --success-text: #065F46;
+            --danger: #EF4444;
+            --danger-bg: #FEE2E2;
+            --danger-text: #991B1B;
+            --warning: #F59E0B;
+            --warning-bg: #FEF3C7;
+            --warning-text: #92400E;
+            --info: #0EA5E9;
+            --info-bg: #E0F2FE;
+            --info-text: #075985;
+            --gradient-btn: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 32px;
+            height: 72px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo { display: flex; align-items: center; gap: 12px; }
+        
+        .logo-icon {
+            width: 36px; height: 36px;
+            background: #EFF6FF;
+            color: var(--primary);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .logo h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        .user-info { display: flex; align-items: center; gap: 24px; }
+
+        .user-card {
+            display: flex; align-items: center; gap: 12px;
+        }
+
+        .user-avatar {
+            width: 36px; height: 36px;
+            background: var(--gradient-btn);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 600; color: white; font-size: 14px;
+        }
+
+        .user-details .user-name { font-weight: 600; font-size: 14px; }
+        .user-details .user-role { font-size: 12px; color: var(--text-muted); }
+
+        .logout-btn {
+            background: white;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500; font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: var(--danger-bg);
+            color: var(--danger-text);
+            border-color: #FCA5A5;
+        }
+
+        .container { max-width: 1440px; margin: 0 auto; padding: 32px; }
+
+        .tabs {
+            display: flex; gap: 8px; margin-bottom: 24px;
+            background: var(--card-bg);
+            padding: 6px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+
+        .tab-btn {
+            padding: 10px 18px;
+            background: transparent;
+            border: none; border-radius: 8px;
+            cursor: pointer; font-weight: 500; font-size: 14px;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover { color: var(--text-main); background: #F1F5F9; }
+
+        .tab-btn.active {
+            background: #EFF6FF;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .tab-content { display: none; animation: fadeIn 0.3s; }
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-panel {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02), 0 2px 4px -1px rgba(0,0,0,0.02);
+            overflow: hidden;
+        }
+
+        .section-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 24px; border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-header h2 { font-size: 18px; color: var(--text-main); font-weight: 600; }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white; border: none; padding: 10px 18px;
+            border-radius: 8px; cursor: pointer; font-weight: 500; font-size: 13px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+        .btn-action {
+            border: none; padding: 6px 12px; border-radius: 6px;
+            cursor: pointer; font-size: 12px; font-weight: 500; margin-right: 6px;
+            transition: all 0.2s;
+        }
+        
+        .btn-edit { background: var(--info-bg); color: var(--info-text); }
+        .btn-edit:hover { background: #BAE6FD; }
+        
+        .btn-delete { background: var(--danger-bg); color: var(--danger-text); margin-right: 0;}
+        .btn-delete:hover { background: #FECACA; }
+
+        .btn-revoke { background: var(--warning-bg); color: var(--warning-text); }
+        .btn-revoke:hover { background: #FDE68A; }
+
+        .table-container { overflow-x: auto; width: 100%; }
+        
+        .data-table {
+            width: 100%; border-collapse: collapse; text-align: left;
+        }
+
+        .data-table th, .data-table td {
+            padding: 16px 24px; border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+        }
+
+        .data-table th {
+            background: #F8FAFC; font-weight: 600; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.5px; font-size: 12px;
+        }
+
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tbody tr:hover { background: #F8FAFC; }
+
+        .status-badge {
+            display: inline-flex; align-items: center; padding: 4px 10px;
+            border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.3px;
+        }
+
+        .status-active { background: var(--success-bg); color: var(--success-text); }
+        .status-inactive { background: var(--text-muted); color: white; }
+        .status-low { background: #F3F4F6; color: #4B5563; }
+        .status-medium { background: var(--warning-bg); color: var(--warning-text); }
+        .status-high { background: var(--danger-bg); color: var(--danger-text); }
+
+        .perm-badge {
+            display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 10px; margin: 2px;
+        }
+        .perm-low { background: #dbeafe; color: #1e40af; }
+        .perm-medium { background: #fef3c7; color: #92400e; }
+        .perm-high { background: #fee2e2; color: #991b1b; }
+        .perm-other { background: #f3e8ff; color: #6b21a5; }
+
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px);
+            z-index: 1000; align-items: center; justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--card-bg); border-radius: 16px;
+            max-width: 750px; width: 90%; max-height: 85vh; overflow-y: auto;
+            padding: 32px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-header h3 { font-size: 18px; color: var(--text-main); font-weight: 600;}
+        .close-modal { cursor: pointer; font-size: 20px; color: var(--text-muted); transition: 0.2s; }
+        .close-modal:hover { color: var(--text-main); }
+
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label {
+            display: block; margin-bottom: 6px; font-weight: 500;
+            font-size: 13px; color: var(--text-main);
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 10px 14px;
+            background: var(--bg-color); border: 1px solid var(--border-color);
+            border-radius: 8px; font-size: 14px; color: var(--text-main);
+            transition: all 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none; background: var(--card-bg); border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .checkbox-wrapper {
+            display: flex; align-items: center; gap: 8px; font-size: 12px; margin-top: 8px; cursor: pointer;
+        }
+        .checkbox-wrapper input { width: auto; margin: 0; }
+
+        .company-info-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px; padding: 24px;
+        }
+        .info-item label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .info-item div { font-size: 14px; font-weight: 500; color: var(--text-main); }
+
+        .toast {
+            position: fixed; bottom: 24px; right: 24px; background: white;
+            padding: 16px 24px; border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+            display: none; z-index: 1100; font-size: 14px; font-weight: 500;
+        }
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--danger); }
+        
+        .filter-input {
+            padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border-color);
+            width: 250px; font-size: 13px; background: var(--bg-color); outline: none;
+        }
+        .filter-input:focus { border-color: var(--primary); background: var(--card-bg); }
+
+        .section-header-btns { display: flex; gap: 10px; }
+
+        .info-note {
+            background: #fef3c7;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            color: #92400e;
+            margin-top: 8px;
+        }
+        
+        .user-checklist-container {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: white;
+        }
+        
+        .dept-group {
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .dept-group:last-child {
+            border-bottom: none;
+        }
+        
+        .dept-header {
+            background: #F8FAFC;
+            padding: 10px 14px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #1E293B;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        
+        .user-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            cursor: pointer;
+            transition: background 0.15s;
+            border-bottom: 1px solid #F1F5F9;
+        }
+        
+        .user-row:last-child {
+            border-bottom: none;
+        }
+        
+        .user-row:hover {
+            background: #EFF6FF;
+        }
+        
+        .user-row input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin: 0;
+        }
+        
+        .user-info-text {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .user-info-text .user-name {
+            font-weight: 500;
+            font-size: 13px;
+            color: #1E293B;
+        }
+        
+        .user-info-text .user-position {
+            font-size: 11px;
+            color: #64748B;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">S</div>
+            <h1>System Administrator Console</h1>
+        </div>
+        <div class="user-info">
+            <div class="user-card">
+                <div class="user-avatar" id="userAvatar">A</div>
+                <div class="user-details">
+                    <div class="user-name" id="username">{{ username }}</div>
+                    <div class="user-role">Administrator</div>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="users">Users</button>
+            <button class="tab-btn" data-tab="departments">Departments</button>
+            <button class="tab-btn" data-tab="positions">Positions & Roles</button>
+            <button class="tab-btn" data-tab="documents">Documents</button>
+            <button class="tab-btn" data-tab="privileges">Active Privileges</button>
+            <button class="tab-btn" data-tab="requests">Access Requests</button>
+            <button class="tab-btn" data-tab="audit">Audit Logs</button>
+            <button class="tab-btn" data-tab="company">Organization Settings</button>
+        </div>
+
+        <!-- Users Tab -->
+        <div id="usersTab" class="tab-content active">
+            <div class="card-panel">
+                <div class="section-header">
+                    <h2>User Directory</h2>
+                    <button class="btn-primary" onclick="showUserModal()">+ Add User</button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Department</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersList">
+                            <tr><td colspan="8" style="text-align: center; padding: 40px;">Loading users...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Departments Tab -->
+        <div id="departmentsTab" class="tab-content">
+            <div class="card-panel">
+                <div class="section-header">
+                    <h2>Departments</h2>
+                    <button class="btn-primary" onclick="showDepartmentModal()">+ Add Department</button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Department Name</th>
+                                <th>Code</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="departmentsList"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Positions Tab -->
+        <div id="positionsTab" class="tab-content">
+            <div class="card-panel">
+                <div class="section-header">
+                    <h2>Positions Matrix</h2>
+                    <button class="btn-primary" onclick="showPositionModal()">+ Add Position</button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Level</th>
+                                <th>Clearance</th>
+                                <th>Approval Permissions</th>
+                                <th>Other Permissions</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="positionsList"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Documents Tab -->
+        <div id="documentsTab" class="tab-content">
+            <div class="card-panel">
+                <div class="section-header">
+                    <h2>Secure Documents</h2>
+                    <button class="btn-primary" onclick="showDocumentModal()">+ Upload Document</button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Classification</th>
+                                <th>Uploader</th>
+                                <th>Date</th>
+                                <th>Views</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="documentsList"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Privileges Tab -->
+        <div id="privilegesTab" class="tab-content">
+            <div class="card-panel">
+                <div class="section-header">
+                    <h2>Temporary Elevations</h2>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Role</th>
+                                <th>Granted Level</th>
+                                <th>Granted By</th>
+                                <th>Time Remaining</th>
+                                <th>Expires At</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="privilegesList"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Access Requests Tab -->
+        <div id="requestsTab" class="tab-content">
+            <div class="card-panel">
+                <div class="section-header">
+                    <h2>Pending Approvals</h2>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Role</th>
+                                <th>Requested Level</th>
+                                <th>Reason</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="requestsList"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Audit Logs Tab -->
+        <div id="auditTab" class="tab-content">
+            <div class="card-panel">
+                <div class="section-header">
+                    <h2>Security Audit Trail</h2>
+                    <input type="text" id="logFilter" class="filter-input" placeholder="Search events or users...">
+                </div>
+                <div class="table-container" style="max-height: 600px; overflow-y: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Actor</th>
+                                <th>Event Action</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="auditLogsList"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Company Info Tab -->
+        <div id="companyTab" class="tab-content">
+            <div class="card-panel">
+                <div class="section-header">
+                    <h2>Organization Profile</h2>
+                    <button class="btn-primary" style="background: white; color: var(--text-main); border: 1px solid var(--border-color);" onclick="editCompany()">Edit Details</button>
+                </div>
+                <div id="companyInfo" class="company-info-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Modal -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="userModalTitle">Add User</h3>
+                <span class="close-modal" onclick="closeModal('userModal')">x</span>
+            </div>
+            <form id="userForm">
+                <input type="hidden" id="userId">
+                <div class="form-grid">
+                    <div class="form-group"><label>Username *</label><input type="text" id="userUsername" required></div>
+                    <div class="form-group"><label>Password</label><input type="password" id="userPassword" placeholder="Leave blank to keep current"></div>
+                    <div class="form-group"><label>Email *</label><input type="email" id="userEmail" required></div>
+                    <div class="form-group"><label>First Name</label><input type="text" id="userFirstName"></div>
+                    <div class="form-group"><label>Last Name</label><input type="text" id="userLastName"></div>
+                    <div class="form-group"><label>Phone Number</label><input type="text" id="userPhone"></div>
+                    <div class="form-group"><label>Department *</label><select id="userDepartment" required></select></div>
+                    <div class="form-group"><label>Position *</label><select id="userPosition" required></select></div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Salary (RM)</label>
+                        <input type="number" id="userSalary" placeholder="e.g., 5000" min="0">
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;"><label>Status</label><select id="userStatus"><option value="1">Active</option><option value="0">Inactive</option></select></div>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Save Configuration</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Department Modal -->
+    <div id="deptModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3 id="deptModalTitle">Add Department</h3><span class="close-modal" onclick="closeModal('deptModal')">x</span></div>
+            <form id="deptForm">
+                <input type="hidden" id="deptId">
+                <div class="form-group"><label>Department Name *</label><input type="text" id="deptName" required></div>
+                <div class="form-group"><label>Department Code</label><input type="text" id="deptCode" placeholder="e.g. ENG"></div>
+                <div class="form-group"><label>Description</label><textarea id="deptDesc" rows="3"></textarea></div>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Save Department</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Position Modal -->
+    <div id="posModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="posModalTitle">Add Position</h3>
+                <span class="close-modal" onclick="closeModal('posModal')">x</span>
+            </div>
+            <form id="posForm">
+                <input type="hidden" id="posId">
+                <div class="form-grid">
+                    <div class="form-group"><label>Position Title *</label><input type="text" id="posTitle" required></div>
+                    <div class="form-group"><label>Hierarchy Level (1=Highest, 5=Lowest)</label><input type="number" id="posLevel" value="1" min="1" max="10"></div>
+                    <div class="form-group"><label>Reports To</label><select id="posParent"></select></div>
+                    <div class="form-group"><label>Clearance Level</label><select id="posAccess">
+                        <option value="Low">Low - Public Information</option>
+                        <option value="Medium">Medium - Confidential</option>
+                        <option value="High">High - Restricted</option>
+                    </select></div>
+                </div>
+                <div class="form-group"><label>Description</label><textarea id="posDesc" rows="2"></textarea></div>
+                
+                <div class="form-group">
+                    <label style="font-weight: 600; color: var(--primary);">Approval Permissions</label>
+                    <div class="form-grid" style="margin-top: 8px;">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="posCanApproveLow"> Approve LOW Requests (Employees to Medium)
+                        </label>
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="posCanApproveMedium"> Approve MEDIUM Requests (Managers to High)
+                        </label>
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="posCanApproveHigh"> Approve HIGH Requests (CEO Level)
+                        </label>
+                    </div>
+                    <div class="info-note">
+                        Classification Rules:<br>
+                        - LOW requests: Employees requesting Medium access - Approved by Manager or CEO<br>
+                        - MEDIUM requests: Managers requesting High access - Approved ONLY by CEO<br>
+                        - HIGH requests: Can only be approved by CEO
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label style="font-weight: 600; color: var(--primary);">Document Permissions</label>
+                    <div class="form-grid" style="margin-top: 8px;">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="posCanUpload"> Can Upload Documents
+                        </label>
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="posCanViewAll"> Can View ALL Documents (Bypass Restrictions)
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label style="font-weight: 600; color: var(--primary);">System Management</label>
+                    <div class="form-grid" style="margin-top: 8px;">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="posCanManage"> Can Manage Users (Access Admin Panel)
+                        </label>
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="posCanAudit"> Can View Audit Logs
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Save Role</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Document Modal -->
+    <div id="docModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3 id="docModalTitle">Upload Document</h3><span class="close-modal" onclick="closeModal('docModal')">x</span></div>
+            <form id="docForm">
+                <input type="hidden" id="docId">
+                <div class="form-group"><label>Document Title *</label><input type="text" id="docTitle" required></div>
+                <div class="form-group"><label>Description</label><textarea id="docDescription" rows="2"></textarea></div>
+                <div class="form-group"><label>Security Classification</label><select id="docClassification">
+                    <option value="low">Low (Public Info)</option>
+                    <option value="medium">Medium (Internal Only)</option>
+                    <option value="high">High (Restricted)</option>
+                </select></div>
+                <div class="form-group"><label>Content Payload *</label><textarea id="docContent" rows="5" required></textarea></div>
+                <div class="form-group"><label>Recipient Type</label><select id="recipientType">
+                    <option value="all">Everyone</option>
+                    <option value="department">Specific Department Only</option>
+                    <option value="specific">Specific People Only</option>
+                </select></div>
+                <div id="departmentSelectionDiv" style="display: none;">
+                    <div class="form-group">
+                        <label>Select Department:</label>
+                        <select id="departmentSelect"></select>
+                    </div>
+                </div>
+                <div id="userSelectionDiv" style="display: none;">
+                    <div class="form-group">
+                        <label>Select Users:</label>
+                        <div id="userChecklist" class="user-checklist-container">
+                            <div style="padding: 16px; text-align: center; color: var(--text-muted);">Loading users...</div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Upload Document</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Company Edit Modal -->
+    <div id="companyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Edit Organization Profile</h3><span class="close-modal" onclick="closeModal('companyModal')">x</span></div>
+            <form id="companyForm">
+                <div class="form-grid">
+                    <div class="form-group"><label>Company Name</label><input type="text" id="comp_name"></div>
+                    <div class="form-group"><label>Registration Number</label><input type="text" id="comp_reg_number"></div>
+                    <div class="form-group"><label>Tax ID</label><input type="text" id="comp_tax_id"></div>
+                    <div class="form-group"><label>Phone</label><input type="text" id="comp_phone"></div>
+                    <div class="form-group"><label>Email</label><input type="email" id="comp_email"></div>
+                    <div class="form-group"><label>Website</label><input type="text" id="comp_website"></div>
+                    <div class="form-group"><label>Established Date</label><input type="date" id="comp_established_date"></div>
+                    <div class="form-group" style="grid-column: span 2;"><label>Headquarters Address</label><textarea id="comp_address" rows="2"></textarea></div>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Update Profile</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        let loadedTabs = {};
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        }
+
+        function showTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            const tabId = `${tab}Tab`;
+            const selectedTab = document.getElementById(tabId);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            const targetButton = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
+            if (targetButton) {
+                targetButton.classList.add('active');
+            }
+            
+            setTimeout(() => {
+                switch(tab) {
+                    case 'users': loadUsers(); break;
+                    case 'departments': loadDepartments(); break;
+                    case 'positions': loadPositions(); break;
+                    case 'documents': loadDocuments(); break;
+                    case 'privileges': loadPrivileges(); break;
+                    case 'requests': loadRequests(); break;
+                    case 'audit': loadAuditLogs(); break;
+                    case 'company': loadCompany(); break;
+                }
+                loadedTabs[tab] = true;
+            }, 50);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tab = this.getAttribute('data-tab');
+                    if (tab) showTab(tab);
+                });
+            });
+            loadUsers();
+        });
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        async function logout() {
+            window.location.href = '/logout';
+        }
+
+        async function loadUsers() {
+            try {
+                const response = await fetch('/api/users');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const data = await response.json();
+                const tbody = document.getElementById('usersList');
+                if (!tbody) return;
+                
+                if (data.error) {
+                    tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 20px; color: red;">${data.error}</td></tr>`;
+                    showToast(data.error, 'error');
+                    return;
+                }
+                
+                let users = data;
+                if (!Array.isArray(users) && users.users) users = users.users;
+                if (!Array.isArray(users)) users = [];
+                
+                if (!users || users.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px;">No users found. Click "+ Add User" to create one.</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = users.map(u => `
+                    <tr>
+                        <td style="color: var(--text-muted);">${u.id || '-'}</td>
+                        <td style="font-weight: 500;">${escapeHtml(u.username || '-')}</td>
+                        <td>${escapeHtml(u.email || '-')}</td>
+                        <td>${escapeHtml(u.first_name || '')} ${escapeHtml(u.last_name || '')}</td>
+                        <td>${escapeHtml(u.position_title || '-')}</td>
+                        <td><span style="background: var(--bg-color); padding: 4px 8px; border-radius: 6px;">${escapeHtml(u.department_name || '-')}</span></td>
+                        <td><span class="status-badge ${u.is_active ? 'status-active' : 'status-inactive'}">${u.is_active ? 'Active' : 'Inactive'}</span></td>
+                        <td>
+                            <button class="btn-action btn-edit" onclick="editUser(${u.id})">Edit</button>
+                            <button class="btn-action btn-delete" onclick="deleteUser(${u.id})">Delete</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading users:', error);
+                const tbody = document.getElementById('usersList');
+                if (tbody) tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">Failed to load users.</td></tr>';
+            }
+        }
+
+        function showUserModal() {
+            document.getElementById('userModalTitle').textContent = 'Add User';
+            document.getElementById('userForm').reset();
+            document.getElementById('userId').value = '';
+            document.getElementById('userSalary').value = '';
+            loadDepartmentOptions();
+            loadPositionOptions();
+            document.getElementById('userModal').style.display = 'flex';
+        }
+
+        async function editUser(id) {
+            try {
+                const response = await fetch('/api/users');
+                const data = await response.json();
+                let users = Array.isArray(data) ? data : (data.users || []);
+                const user = users.find(u => u.id === id);
+                if (!user) return;
+                
+                document.getElementById('userModalTitle').textContent = 'Edit User';
+                document.getElementById('userId').value = user.id;
+                document.getElementById('userUsername').value = user.username || '';
+                document.getElementById('userEmail').value = user.email || '';
+                document.getElementById('userFirstName').value = user.first_name || '';
+                document.getElementById('userLastName').value = user.last_name || '';
+                document.getElementById('userPhone').value = user.phone_number || '';
+                document.getElementById('userStatus').value = user.is_active ? '1' : '0';
+                document.getElementById('userPassword').value = '';
+                document.getElementById('userSalary').value = user.salary || 0;
+                await loadDepartmentOptions(user.department_name);
+                await loadPositionOptions(user.position_title);
+                document.getElementById('userModal').style.display = 'flex';
+            } catch (error) { 
+                showToast('Error loading user', 'error'); 
+            }
+        }
+
+        async function deleteUser(id) {
+            if (!confirm('Are you sure you want to delete this user?')) return;
+            try {
+                const response = await fetch(`/api/users/${id}`, { method: 'DELETE' });
+                const result = await response.json();
+                if (result.success) { 
+                    showToast('User deleted', 'success'); 
+                    loadUsers(); 
+                } else {
+                    showToast(result.error || 'Delete failed', 'error');
+                }
+            } catch (error) { 
+                showToast('Error deleting user', 'error'); 
+            }
+        }
+
+        document.getElementById('userForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('userId').value;
+            const data = {
+                username: document.getElementById('userUsername').value,
+                email: document.getElementById('userEmail').value,
+                first_name: document.getElementById('userFirstName').value,
+                last_name: document.getElementById('userLastName').value,
+                phone_number: document.getElementById('userPhone').value,
+                department_id: document.getElementById('userDepartment').value,
+                position_id: document.getElementById('userPosition').value,
+                is_active: document.getElementById('userStatus').value === '1',
+                salary: parseInt(document.getElementById('userSalary').value) || 0
+            };
+            const password = document.getElementById('userPassword').value;
+            if (password) data.password = password;
+            
+            try {
+                const url = id ? `/api/users/${id}` : '/api/users';
+                const method = id ? 'PUT' : 'POST';
+                const response = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+                const result = await response.json();
+                if (result.success) { 
+                    showToast(id ? 'User updated' : 'User created', 'success'); 
+                    closeModal('userModal'); 
+                    loadUsers(); 
+                } else {
+                    showToast(result.error || 'Save failed', 'error');
+                }
+            } catch (error) { 
+                showToast('Error saving user', 'error'); 
+            }
+        });
+
+        async function loadDepartmentOptions(selectedName = null) {
+            try {
+                const response = await fetch('/api/departments');
+                const depts = await response.json();
+                const select = document.getElementById('userDepartment');
+                if (select) {
+                    select.innerHTML = depts.map(d => `<option value="${d.id}" ${selectedName === d.name ? 'selected' : ''}>${escapeHtml(d.name)}</option>`).join('');
+                }
+            } catch (error) {
+                console.error('Error loading departments:', error);
+            }
+        }
+
+        async function loadPositionOptions(selectedTitle = null) {
+            try {
+                const response = await fetch('/api/positions');
+                const positions = await response.json();
+                const select = document.getElementById('userPosition');
+                if (select) {
+                    select.innerHTML = positions.map(p => `<option value="${p.id}" ${selectedTitle === p.title ? 'selected' : ''}>${escapeHtml(p.title)}</option>`).join('');
+                }
+            } catch (error) {
+                console.error('Error loading positions:', error);
+            }
+        }
+
+        async function loadDepartments() {
+            try {
+                const response = await fetch('/api/departments');
+                const depts = await response.json();
+                const tbody = document.getElementById('departmentsList');
+                if (!tbody) return;
+                
+                tbody.innerHTML = depts.map(d => `
+                    <tr>
+                        <td style="color: var(--text-muted);">${d.id}</td>
+                        <td style="font-weight: 500;">${escapeHtml(d.name)}</td>
+                        <td><span style="font-family: monospace; background: #F1F5F9; padding: 4px 6px; border-radius: 4px;">${escapeHtml(d.code || '-')}</span></td>
+                        <td style="color: var(--text-muted);">${escapeHtml(d.description || '-')}</td>
+                        <td>
+                            <button class="btn-action btn-edit" onclick="editDepartment(${d.id})">Edit</button>
+                            <button class="btn-action btn-delete" onclick="deleteDepartment(${d.id})">Delete</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) { 
+                showToast('Error loading departments', 'error'); 
+            }
+        }
+
+        function showDepartmentModal() { 
+            document.getElementById('deptModalTitle').textContent = 'Add Department'; 
+            document.getElementById('deptForm').reset(); 
+            document.getElementById('deptId').value = ''; 
+            document.getElementById('deptModal').style.display = 'flex'; 
+        }
+        
+        async function editDepartment(id) {
+            try {
+                const response = await fetch('/api/departments');
+                const depts = await response.json();
+                const dept = depts.find(d => d.id === id);
+                if (dept) {
+                    document.getElementById('deptModalTitle').textContent = 'Edit Department';
+                    document.getElementById('deptId').value = dept.id;
+                    document.getElementById('deptName').value = dept.name;
+                    document.getElementById('deptCode').value = dept.code || '';
+                    document.getElementById('deptDesc').value = dept.description || '';
+                    document.getElementById('deptModal').style.display = 'flex';
+                }
+            } catch (error) { showToast('Error loading department', 'error'); }
+        }
+        
+        async function deleteDepartment(id) { 
+            if (!confirm('Delete department?')) return; 
+            try { 
+                await fetch(`/api/departments/${id}`, { method: 'DELETE' }); 
+                showToast('Department deleted', 'success'); 
+                loadDepartments(); 
+            } catch(e) { showToast('Error deleting department', 'error'); } 
+        }
+        
+        document.getElementById('deptForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('deptId').value;
+            const data = { 
+                name: document.getElementById('deptName').value, 
+                code: document.getElementById('deptCode').value, 
+                description: document.getElementById('deptDesc').value 
+            };
+            const url = id ? `/api/departments/${id}` : '/api/departments';
+            const method = id ? 'PUT' : 'POST';
+            try {
+                const response = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+                const result = await response.json();
+                if (result.success) { 
+                    showToast(id ? 'Department updated' : 'Department created', 'success'); 
+                    closeModal('deptModal'); 
+                    loadDepartments(); 
+                } else { showToast(result.error, 'error'); }
+            } catch (error) { showToast('Error saving department', 'error'); }
+        });
+
+        async function loadPositions() {
+            try {
+                const response = await fetch('/api/positions');
+                const positions = await response.json();
+                const tbody = document.getElementById('positionsList');
+                if (!tbody) return;
+                
+                if (positions.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px;">No positions created yet.</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = positions.map(p => {
+                    let approvalBadges = [];
+                    if (p.can_approve_low) approvalBadges.push('<span class="perm-badge perm-low">LOW</span>');
+                    if (p.can_approve_medium) approvalBadges.push('<span class="perm-badge perm-medium">MEDIUM</span>');
+                    if (p.can_approve_high) approvalBadges.push('<span class="perm-badge perm-high">HIGH</span>');
+                    if (approvalBadges.length === 0) approvalBadges.push('<span style="color: var(--text-muted);">None</span>');
+                    
+                    let otherPerms = [];
+                    if (p.can_upload_documents) otherPerms.push('<span class="perm-badge perm-other">Upload</span>');
+                    if (p.can_view_all_documents) otherPerms.push('<span class="perm-badge perm-other">View All</span>');
+                    if (p.can_manage_users) otherPerms.push('<span class="perm-badge perm-other">Manage</span>');
+                    if (p.can_view_audit) otherPerms.push('<span class="perm-badge perm-other">Audit</span>');
+                    if (otherPerms.length === 0) otherPerms.push('<span style="color: var(--text-muted);">-</span>');
+                    
+                    return `
+                        <tr>
+                            <td style="color: var(--text-muted);">${p.id}</td>
+                            <td style="font-weight: 500;">${escapeHtml(p.title)}</td>
+                            <td><span style="background: #EFF6FF; color: #1D4ED8; padding: 2px 8px; border-radius: 12px; font-size: 12px;">Lvl ${p.level}</span></td>
+                            <td><span class="status-badge status-${(p.access_level || 'Low').toLowerCase()}">${p.access_level || 'Low'}</span></td>
+                            <td style="font-size: 11px;">${approvalBadges.join(' ')}</td>
+                            <td style="font-size: 11px;">${otherPerms.join(' ')}</td>
+                            <td>
+                                <button class="btn-action btn-edit" onclick="editPosition(${p.id})">Edit</button>
+                                <button class="btn-action btn-delete" onclick="deletePosition(${p.id})">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            } catch (error) { 
+                showToast('Error loading positions', 'error'); 
+            }
+        }
+
+        function showPositionModal() { 
+            document.getElementById('posModalTitle').textContent = 'Add Position'; 
+            document.getElementById('posForm').reset(); 
+            document.getElementById('posId').value = ''; 
+            document.querySelectorAll('#posForm input[type=checkbox]').forEach(cb => cb.checked = false);
+            loadParentOptions(); 
+            document.getElementById('posModal').style.display = 'flex'; 
+        }
+        
+        async function editPosition(id) {
+            try {
+                const response = await fetch('/api/positions');
+                const positions = await response.json();
+                const pos = positions.find(p => p.id === id);
+                if (pos) {
+                    document.getElementById('posModalTitle').textContent = 'Edit Position';
+                    document.getElementById('posId').value = pos.id;
+                    document.getElementById('posTitle').value = pos.title;
+                    document.getElementById('posLevel').value = pos.level;
+                    document.getElementById('posAccess').value = pos.access_level || 'Low';
+                    document.getElementById('posDesc').value = pos.description || '';
+                    document.getElementById('posCanApproveLow').checked = pos.can_approve_low === 1;
+                    document.getElementById('posCanApproveMedium').checked = pos.can_approve_medium === 1;
+                    document.getElementById('posCanApproveHigh').checked = pos.can_approve_high === 1;
+                    document.getElementById('posCanUpload').checked = pos.can_upload_documents === 1;
+                    document.getElementById('posCanViewAll').checked = pos.can_view_all_documents === 1;
+                    document.getElementById('posCanManage').checked = pos.can_manage_users === 1;
+                    document.getElementById('posCanAudit').checked = pos.can_view_audit === 1;
+                    await loadParentOptions(pos.parent_id);
+                    document.getElementById('posModal').style.display = 'flex';
+                }
+            } catch (error) { showToast('Error loading position', 'error'); }
+        }
+        
+        async function deletePosition(id) { 
+            if (!confirm('Delete this position?')) return; 
+            try { 
+                await fetch(`/api/positions/${id}`, { method: 'DELETE' }); 
+                showToast('Position deleted', 'success'); 
+                loadPositions(); 
+            } catch(e) { showToast('Error deleting position', 'error'); } 
+        }
+        
+        async function loadParentOptions(selectedId = null) {
+            try {
+                const response = await fetch('/api/positions');
+                const positions = await response.json();
+                const select = document.getElementById('posParent');
+                if (select) {
+                    select.innerHTML = '<option value="">None (Top Level)</option>' + positions.map(p => `<option value="${p.id}" ${selectedId === p.id ? 'selected' : ''}>${escapeHtml(p.title)} (Level ${p.level})</option>`).join('');
+                }
+            } catch (error) { console.error('Error loading parent options:', error); }
+        }
+        
+        document.getElementById('posForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('posId').value;
+            const data = {
+                title: document.getElementById('posTitle').value,
+                level: parseInt(document.getElementById('posLevel').value),
+                parent_id: document.getElementById('posParent').value || null,
+                access_level: document.getElementById('posAccess').value,
+                description: document.getElementById('posDesc').value,
+                can_approve_low: document.getElementById('posCanApproveLow').checked,
+                can_approve_medium: document.getElementById('posCanApproveMedium').checked,
+                can_approve_high: document.getElementById('posCanApproveHigh').checked,
+                can_upload_documents: document.getElementById('posCanUpload').checked,
+                can_view_all_documents: document.getElementById('posCanViewAll').checked,
+                can_manage_users: document.getElementById('posCanManage').checked,
+                can_view_audit: document.getElementById('posCanAudit').checked
+            };
+            
+            const url = id ? `/api/positions/${id}` : '/api/positions';
+            const method = id ? 'PUT' : 'POST';
+            
+            try {
+                const response = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+                const result = await response.json();
+                if (result.success) { 
+                    showToast(id ? 'Position updated' : 'Position created', 'success'); 
+                    closeModal('posModal'); 
+                    loadPositions(); 
+                } else { showToast(result.error, 'error'); }
+            } catch (error) { showToast('Error saving position', 'error'); }
+        });
+
+        async function loadDocuments() {
+            try {
+                const response = await fetch('/get_documents');
+                const data = await response.json();
+                const tbody = document.getElementById('documentsList');
+                if (!tbody) return;
+                
+                if (!data.documents || data.documents.length === 0) { 
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 32px;">No secure documents found</td></tr>'; 
+                    return; 
+                }
+                tbody.innerHTML = data.documents.map(d => `
+                    <tr>
+                        <td style="color: var(--text-muted);">${d.id}</td>
+                        <td style="font-weight: 500;">${escapeHtml(d.title)}</td>
+                        <td><span class="status-badge status-${d.classification.toLowerCase()}">${d.classification.toUpperCase()}</span></td>
+                        <td>${escapeHtml(d.uploader_name)}</td>
+                        <td style="color: var(--text-muted);">${d.upload_date}</td>
+                        <td><span style="background: #F1F5F9; padding: 2px 8px; border-radius: 12px; font-size: 12px;">${d.download_count}</span></td>
+                        <td><button class="btn-action btn-delete" onclick="deleteDocument(${d.id})">Delete</button></td>
+                    </tr>
+                `).join('');
+            } catch (error) { showToast('Error loading documents', 'error'); }
+        }
+
+        function showDocumentModal() { 
+            document.getElementById('docModalTitle').textContent = 'Upload Document'; 
+            document.getElementById('docForm').reset(); 
+            document.getElementById('docId').value = ''; 
+            document.getElementById('departmentSelectionDiv').style.display = 'none';
+            document.getElementById('userSelectionDiv').style.display = 'none';
+            document.getElementById('docModal').style.display = 'flex'; 
+        }
+        
+        async function deleteDocument(id) { 
+            if (!confirm('Delete document permanently?')) return; 
+            try { 
+                await fetch(`/delete_document/${id}`, { method: 'DELETE' }); 
+                showToast('Document deleted', 'success'); 
+                loadDocuments(); 
+            } catch(e) { showToast('Error deleting document', 'error'); } 
+        }
+        
+        document.getElementById('docForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('title', document.getElementById('docTitle').value);
+            formData.append('description', document.getElementById('docDescription').value);
+            formData.append('classification', document.getElementById('docClassification').value);
+            formData.append('content', document.getElementById('docContent').value);
+            formData.append('recipient_type', document.getElementById('recipientType').value);
+            
+            if (document.getElementById('recipientType').value === 'department') {
+                formData.append('restricted_department_id', document.getElementById('departmentSelect').value);
+            }
+            
+            if (document.getElementById('recipientType').value === 'specific') {
+                document.querySelectorAll('#userChecklist input[type="checkbox"]:checked').forEach(cb => formData.append('selected_users', cb.value));
+            }
+            
+            try {
+                const response = await fetch('/upload_document', { method: 'POST', body: formData });
+                const result = await response.json();
+                if (result.success) { 
+                    showToast('Document uploaded', 'success'); 
+                    closeModal('docModal'); 
+                    loadDocuments(); 
+                } else { showToast(result.error, 'error'); }
+            } catch (error) { showToast('Error uploading document', 'error'); }
+        });
+
+        // FIXED: User selection with proper alignment and ordering
+        document.getElementById('recipientType')?.addEventListener('change', async function() {
+            const departmentDiv = document.getElementById('departmentSelectionDiv');
+            const userDiv = document.getElementById('userSelectionDiv');
+            departmentDiv.style.display = 'none';
+            userDiv.style.display = 'none';
+            
+            if (this.value === 'department') {
+                departmentDiv.style.display = 'block';
+                try {
+                    const response = await fetch('/api/departments/list');
+                    const departments = await response.json();
+                    const select = document.getElementById('departmentSelect');
+                    select.innerHTML = '<option value="">Select department</option>' + 
+                        departments.map(d => `<option value="${d.id}">${escapeHtml(d.name)}</option>`).join('');
+                } catch (error) { console.error('Error loading departments:', error); }
+            } else if (this.value === 'specific') {
+                userDiv.style.display = 'block';
+                try {
+                    const response = await fetch('/api/users/for_selection');
+                    const users = await response.json();
+                    const checklist = document.getElementById('userChecklist');
+                    
+                    if (users.error) {
+                        checklist.innerHTML = '<div style="padding: 16px; text-align: center; color: #EF4444;">Error loading users</div>';
+                        return;
+                    }
+                    
+                    if (!users || users.length === 0) {
+                        checklist.innerHTML = '<div style="padding: 16px; text-align: center; color: #64748B;">No users available for selection</div>';
+                        return;
+                    }
+                    
+                    // Sort users by department name, then by username
+                    users.sort((a, b) => {
+                        const deptA = (a.department_name || 'Other').toLowerCase();
+                        const deptB = (b.department_name || 'Other').toLowerCase();
+                        if (deptA !== deptB) return deptA.localeCompare(deptB);
+                        return (a.username || '').toLowerCase().localeCompare((b.username || '').toLowerCase());
+                    });
+                    
+                    // Group users by department
+                    const grouped = {};
+                    users.forEach(user => {
+                        const dept = user.department_name || 'Other';
+                        if (!grouped[dept]) grouped[dept] = [];
+                        grouped[dept].push(user);
+                    });
+                    
+                    // Build HTML with proper structure
+                    let html = '';
+                    for (const [dept, deptUsers] of Object.entries(grouped)) {
+                        html += `<div class="dept-group">`;
+                        html += `<div class="dept-header">${escapeHtml(dept)}</div>`;
+                        
+                        deptUsers.forEach((user, index) => {
+                            html += `
+                                <label class="user-row">
+                                    <input type="checkbox" value="${user.id}" class="user-checkbox">
+                                    <div class="user-info-text">
+                                        <div class="user-name">${escapeHtml(user.username)}</div>
+                                        <div class="user-position">${escapeHtml(user.position_title || 'No position')}</div>
+                                    </div>
+                                </label>
+                            `;
+                        });
+                        
+                        html += `</div>`;
+                    }
+                    
+                    checklist.innerHTML = html;
+                    
+                } catch (error) {
+                    console.error('Error loading users:', error);
+                    document.getElementById('userChecklist').innerHTML = '<div style="padding: 16px; text-align: center; color: #EF4444;">Error loading users</div>';
+                }
+            }
+        });
+
+        async function loadPrivileges() {
+            try {
+                const response = await fetch('/get_active_privileges');
+                const data = await response.json();
+                const tbody = document.getElementById('privilegesList');
+                if (!tbody) return;
+                
+                if (!data.privileges || data.privileges.length === 0) { 
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 32px;">No active privilege elevations</td></tr>'; 
+                    return; 
+                }
+                tbody.innerHTML = data.privileges.map(p => `
+                    <tr>
+                        <td style="font-weight: 500;">${escapeHtml(p.username)}</td>
+                        <td style="color: var(--text-muted);">${escapeHtml(p.position_title)}</td>
+                        <td><span class="status-badge status-${p.granted_level.toLowerCase()}">${p.granted_level}</span></td>
+                        <td>${escapeHtml(p.granted_by)}</td>
+                        <td><span class="status-badge" style="background:var(--warning-bg); color:var(--warning-text);">${p.remaining_time}</span></td>
+                        <td style="color: var(--text-muted); font-size: 12px;">${new Date(p.expires_at).toLocaleString()}</td>
+                        <td><button class="btn-action btn-revoke" onclick="revokePrivilege(${p.grant_id}, '${escapeHtml(p.username)}')">Revoke</button></td>
+                    </tr>
+                `).join('');
+            } catch (error) { showToast('Error loading privileges', 'error'); }
+        }
+
+        async function revokePrivilege(grantId, username) {
+            if (!confirm(`Revoke temporary access for ${username}?`)) return;
+            try {
+                const response = await fetch('/revoke_privilege', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ grant_id: grantId }) });
+                const result = await response.json();
+                if (result.success) { 
+                    showToast(result.message, 'success'); 
+                    loadPrivileges(); 
+                } else { showToast(result.error, 'error'); }
+            } catch (error) { showToast('Error revoking privilege', 'error'); }
+        }
+
+        async function loadRequests() {
+            try {
+                const response = await fetch('/get_access_requests');
+                const data = await response.json();
+                const tbody = document.getElementById('requestsList');
+                if (!tbody) return;
+                
+                const pendingRequests = data.requests ? data.requests.filter(r => r.status === 'pending') : [];
+                
+                if (pendingRequests.length === 0) { 
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 32px;">No pending access requests</td></tr>'; 
+                    return; 
+                }
+                tbody.innerHTML = pendingRequests.map(r => `
+                    <tr>
+                        <td style="font-weight: 500;">${escapeHtml(r.username)}</td>
+                        <td style="color: var(--text-muted);">${escapeHtml(r.requester_role)}</td>
+                        <td><span class="status-badge status-${r.requested_level.toLowerCase()}">${r.requested_level}</span></td>
+                        <td>${escapeHtml(r.reason)}</td>
+                        <td style="color: var(--text-muted); font-size: 12px;">${new Date(r.timestamp).toLocaleString()}</td>
+                        <td>
+                            <button class="btn-action btn-edit" onclick="reviewRequest(${r.id}, 'approved')" style="background: var(--success-bg); color: var(--success-text);">Approve (2h)</button>
+                            <button class="btn-action btn-delete" onclick="reviewRequest(${r.id}, 'rejected')">Reject</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) { showToast('Error loading requests', 'error'); }
+        }
+
+        async function reviewRequest(requestId, decision) {
+            const notes = prompt(`Enter notes for ${decision}:`);
+            if (notes === null) return;
+            try {
+                const response = await fetch('/review_request', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ request_id: requestId, decision, notes }) });
+                const result = await response.json();
+                if (result.success) { 
+                    showToast(result.message, 'success'); 
+                    loadRequests(); 
+                    loadPrivileges(); 
+                } else { showToast(result.error, 'error'); }
+            } catch (error) { showToast('Error processing request', 'error'); }
+        }
+
+        async function loadAuditLogs() {
+            const filter = document.getElementById('logFilter')?.value || '';
+            try {
+                const response = await fetch(`/get_audit_logs?limit=100&action=${filter}`);
+                const data = await response.json();
+                const tbody = document.getElementById('auditLogsList');
+                if (!tbody) return;
+                
+                if (!data.logs || data.logs.length === 0) { 
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 32px;">No audit logs found</td></tr>'; 
+                    return; 
+                }
+                tbody.innerHTML = data.logs.map(log => {
+                    let actionBadgeClass = 'status-low';
+                    const action = log.action ? log.action.toLowerCase() : '';
+                    if (action.includes('delete') || action.includes('revoke')) actionBadgeClass = 'status-high';
+                    if (action.includes('update') || action.includes('grant')) actionBadgeClass = 'status-medium';
+                    
+                    return `
+                        <tr>
+                            <td style="white-space: nowrap; color: var(--text-muted); font-size: 12px;">${new Date(log.timestamp).toLocaleString()}</td>
+                            <td style="font-weight: 500;">${escapeHtml(log.username || 'System')}</td>
+                            <td><span class="status-badge ${actionBadgeClass}">${escapeHtml(log.action)}</span></td>
+                            <td style="font-family: monospace; font-size: 12px; color: var(--text-muted); background: #F8FAFC; padding: 8px; border-radius: 6px;">${escapeHtml(log.details || '-')}</td>
+                        </tr>
+                    `;
+                }).join('');
+            } catch (error) { showToast('Error loading audit logs', 'error'); }
+        }
+
+        document.getElementById('logFilter')?.addEventListener('keyup', () => loadAuditLogs());
+
+        async function loadCompany() {
+            try {
+                const response = await fetch('/api/company');
+                const company = await response.json();
+                const div = document.getElementById('companyInfo');
+                if (!div) return;
+                
+                if (company.error) { 
+                    div.innerHTML = '<p style="color: var(--text-muted);">No company profile found</p>'; 
+                    return; 
+                }
+                
+                div.innerHTML = `
+                    <div class="info-item"><label>Organization Name</label><div>${escapeHtml(company.company_name || '-')}</div></div>
+                    <div class="info-item"><label>Registration Code</label><div>${escapeHtml(company.registration_number || '-')}</div></div>
+                    <div class="info-item"><label>Tax ID</label><div>${escapeHtml(company.tax_id || '-')}</div></div>
+                    <div class="info-item"><label>Phone Contact</label><div>${escapeHtml(company.phone || '-')}</div></div>
+                    <div class="info-item"><label>Email</label><div>${escapeHtml(company.email || '-')}</div></div>
+                    <div class="info-item"><label>Website</label><div>${escapeHtml(company.website || '-')}</div></div>
+                    <div class="info-item"><label>Established Date</label><div>${escapeHtml(company.established_date || '-')}</div></div>
+                    <div class="info-item" style="grid-column: 1 / -1;"><label>Headquarters Address</label><div>${escapeHtml(company.address || '-')}</div></div>
+                `;
+                
+                document.getElementById('comp_name').value = company.company_name || '';
+                document.getElementById('comp_reg_number').value = company.registration_number || '';
+                document.getElementById('comp_tax_id').value = company.tax_id || '';
+                document.getElementById('comp_phone').value = company.phone || '';
+                document.getElementById('comp_email').value = company.email || '';
+                document.getElementById('comp_website').value = company.website || '';
+                document.getElementById('comp_established_date').value = company.established_date || '';
+                document.getElementById('comp_address').value = company.address || '';
+            } catch (error) { showToast('Error loading company info', 'error'); }
+        }
+
+        function editCompany() {
+            document.getElementById('companyModal').style.display = 'flex';
+        }
+
+        document.getElementById('companyForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                company_name: document.getElementById('comp_name').value,
+                registration_number: document.getElementById('comp_reg_number').value,
+                tax_id: document.getElementById('comp_tax_id').value,
+                phone: document.getElementById('comp_phone').value,
+                email: document.getElementById('comp_email').value,
+                website: document.getElementById('comp_website').value,
+                established_date: document.getElementById('comp_established_date').value,
+                address: document.getElementById('comp_address').value
+            };
+            try {
+                const response = await fetch('/api/company', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+                const result = await response.json();
+                if (result.success) { 
+                    showToast('Company info updated', 'success'); 
+                    closeModal('companyModal'); 
+                    loadCompany(); 
+                } else { showToast(result.error, 'error'); }
+            } catch (error) { showToast('Error saving company info', 'error'); }
+        });
+
+        function escapeHtml(text) { 
+            if (!text) return ''; 
+            const div = document.createElement('div'); 
+            div.textContent = text; 
+            return div.innerHTML; 
+        }
+
+        const usernameElement = document.getElementById('username');
+        if (usernameElement) {
+            document.getElementById('userAvatar').textContent = usernameElement.textContent.charAt(0).toUpperCase();
+        }
+        
+        window.onclick = function(e) { 
+            if (e.target.classList.contains('modal')) e.target.style.display = 'none'; 
+        };
+        
+        setInterval(() => {
+            if (document.getElementById('privilegesTab')?.classList.contains('active')) loadPrivileges();
+            if (document.getElementById('requestsTab')?.classList.contains('active')) loadRequests();
+        }, 30000);
+    </script>
+</body>
+</html>

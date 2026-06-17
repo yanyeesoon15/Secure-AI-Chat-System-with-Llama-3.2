@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Secure AI Chat System</title>
+    <style>
+        :root {
+            --bg-color: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --input-bg: #F8FAFC;
+            --primary-accent: #3B82F6;
+            --primary-hover: #2563EB;
+            --gradient-btn: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+            --error-bg: #FEF2F2;
+            --error-text: #EF4444;
+            --success-bg: #F0FDF4;
+            --success-text: #16A34A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,0.03) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,0.03) 0, transparent 50%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .register-container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .register-header {
+            padding: 40px 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .register-header h1 { 
+            font-size: 26px; 
+            color: var(--text-main);
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .register-header p { 
+            font-size: 14px; 
+            color: var(--text-muted); 
+        }
+
+        .register-body { padding: 30px 40px; }
+
+        .form-section {
+            margin-bottom: 35px;
+        }
+
+        .form-section h3 {
+            font-size: 16px;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed var(--border-color);
+            font-weight: 600;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 13px;
+            color: var(--text-main);
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 14px;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            background: var(--card-bg);
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+        
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--gradient-btn);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+        }
+
+        .register-btn:hover { 
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+        }
+        
+        .register-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            background: var(--error-bg);
+            color: var(--error-text);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 13px;
+            border: 1px solid #FCA5A5;
+        }
+
+        .success-message {
+            background: var(--success-bg);
+            color: var(--success-text);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 13px;
+            border: 1px solid #86EFAC;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .login-link a {
+            color: var(--primary-accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        @media (max-width: 640px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full-width { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-header">
+            <h1>User Registration</h1>
+            <p>Create your account to access the Secure AI Chat System</p>
+        </div>
+        <div class="register-body">
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
+            
+            <form id="registerForm">
+                <!-- Account Credentials -->
+                <div class="form-section">
+                    <h3>Account Credentials</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Username *</label>
+                            <input type="text" id="username" required placeholder="Choose a username">
+                        </div>
+                        <div class="form-group">
+                            <label>Password *</label>
+                            <input type="password" id="password" required placeholder="Create a password">
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm Password *</label>
+                            <input type="password" id="confirmPassword" required placeholder="Confirm your password">
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address *</label>
+                            <input type="email" id="email" required placeholder="your.email@company.com">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h3>Personal Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" id="firstName" placeholder="First name">
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" id="lastName" placeholder="Last name">
+                        </div>
+                        <div class="form-group">
+                            <label>IC / Passport Number</label>
+                            <input type="text" id="icNumber" placeholder="e.g., 900101-10-1234">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" id="phoneNumber" placeholder="e.g., 012-3456789">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Home Address</label>
+                            <textarea id="address" rows="2" placeholder="Your full address"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Organization Details -->
+                <div class="form-section">
+                    <h3>Organization Details</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Department *</label>
+                            <select id="departmentId" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Hire Date</label>
+                            <input type="date" id="hireDate">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Information -->
+                <div class="form-section">
+                    <h3>Financial Information (For Payroll)</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Bank Name</label>
+                            <input type="text" id="bankName" placeholder="e.g., Maybank, CIMB, Public Bank">
+                        </div>
+                        <div class="form-group">
+                            <label>Bank Account Number</label>
+                            <input type="text" id="bankAccountNumber" placeholder="Bank account number">
+                        </div>
+                        <div class="form-group">
+                            <label>Bank Account Name</label>
+                            <input type="text" id="bankAccountName" placeholder="Name on bank account">
+                        </div>
+                        <div class="form-group">
+                            <label>EPF Number</label>
+                            <input type="text" id="epfNumber" placeholder="EPF/KWSP number">
+                        </div>
+                        <div class="form-group">
+                            <label>SOCSO Number</label>
+                            <input type="text" id="socsoNumber" placeholder="SOCSO/PERKESO number">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emergency Contact -->
+                <div class="form-section">
+                    <h3>Emergency Contact</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Emergency Contact Name</label>
+                            <input type="text" id="emergencyName" placeholder="Emergency contact person">
+                        </div>
+                        <div class="form-group">
+                            <label>Emergency Contact Phone</label>
+                            <input type="tel" id="emergencyPhone" placeholder="Emergency phone number">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="register-btn" id="registerBtn">Register Account</button>
+            </form>
+            
+            <div class="login-link">
+                Already have an account? <a href="/login">Login here</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function loadDepartments() {
+            try {
+                const response = await fetch('/api/departments');
+                const departments = await response.json();
+                const select = document.getElementById('departmentId');
+                select.innerHTML = '<option value="">Select Department</option>';
+                departments.forEach(dept => {
+                    select.innerHTML += `<option value="${dept.id}">${escapeHtml(dept.name)}</option>`;
+                });
+            } catch (error) {
+                console.error('Error loading departments:', error);
+            }
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                return;
+            }
+            if (password.length < 4) {
+                showError('Password must be at least 4 characters');
+                return;
+            }
+            
+            const data = {
+                username: document.getElementById('username').value,
+                password: password,
+                email: document.getElementById('email').value,
+                position_id: null,
+                department_id: document.getElementById('departmentId').value,
+                first_name: document.getElementById('firstName').value,
+                last_name: document.getElementById('lastName').value,
+                ic_number: document.getElementById('icNumber').value,
+                phone_number: document.getElementById('phoneNumber').value,
+                address: document.getElementById('address').value,
+                bank_name: document.getElementById('bankName').value,
+                bank_account_number: document.getElementById('bankAccountNumber').value,
+                bank_account_name: document.getElementById('bankAccountName').value,
+                epf_number: document.getElementById('epfNumber').value,
+                socso_number: document.getElementById('socsoNumber').value,
+                emergency_contact_name: document.getElementById('emergencyName').value,
+                emergency_contact_phone: document.getElementById('emergencyPhone').value,
+                hire_date: document.getElementById('hireDate').value
+            };
+            
+            if (!data.username || !data.password || !data.email || !data.department_id) {
+                showError('Please fill in all required fields (*)');
+                return;
+            }
+            
+            const btn = document.getElementById('registerBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<div class="spinner"></div> Registering...';
+            
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    showSuccess('Registration successful! Redirecting to login...');
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 2000);
+                } else {
+                    showError(result.message || 'Registration failed');
+                    btn.disabled = false;
+                    btn.innerHTML = 'Register Account';
+                }
+            } catch (error) {
+                showError('Server error. Please try again.');
+                btn.disabled = false;
+                btn.innerHTML = 'Register Account';
+            }
+        });
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            const successDiv = document.getElementById('successMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            successDiv.style.display = 'none';
+            setTimeout(() => { errorDiv.style.display = 'none'; }, 5000);
+        }
+        
+        function showSuccess(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            errorDiv.style.display = 'none';
+        }
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        loadDepartments();
+        document.getElementById('hireDate').value = new Date().toISOString().split('T')[0];
+    </script>
+</body>
+</html>

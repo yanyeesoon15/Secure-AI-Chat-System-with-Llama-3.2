@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Setup - Secure AI Chat System</title>
+    <style>
+        :root {
+            --primary: #3B82F6;
+            --secondary: #8B5CF6;
+            --success: #10B981;
+            --danger: #EF4444;
+            --dark: #1E293B;
+            --gray: #64748B;
+            --light: #F8FAFC;
+            --border: #E2E8F0;
+            --card-bg: #FFFFFF;
+            --gradient-btn: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Roboto', sans-serif;
+            background-color: var(--light);
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,0.03) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,0.03) 0, transparent 50%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: var(--dark);
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: var(--gray);
+            font-size: 15px;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--card-bg);
+            padding: 10px 16px;
+            border-radius: 30px;
+            color: var(--gray);
+            font-size: 14px;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .step.active {
+            border-color: var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+        }
+
+        .step.completed {
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .step-number {
+            width: 24px;
+            height: 24px;
+            background: var(--light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid var(--border);
+        }
+
+        .step.active .step-number {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .step.completed .step-number {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .setup-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 30px 40px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-header h2 {
+            font-size: 20px;
+            margin-bottom: 6px;
+            color: var(--dark);
+        }
+
+        .card-header p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .card-body {
+            padding: 30px 40px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 13px;
+            color: var(--dark);
+        }
+
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--light);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            color: var(--dark);
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus, 
+        .form-group textarea:focus {
+            outline: none;
+            background: var(--card-bg);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table th {
+            background: var(--light);
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--gray);
+        }
+        
+        .data-table td {
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: var(--gradient-btn);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-danger {
+            background: #FEF2F2;
+            color: var(--danger);
+            border: 1px solid #FCA5A5;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-danger:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .hierarchy-view {
+            background: var(--light);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 20px;
+        }
+
+        .hierarchy-item {
+            padding: 12px 16px;
+            margin: 8px 0;
+            border-left: 4px solid var(--primary);
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hierarchy-level-1 { margin-left: 0; }
+        .hierarchy-level-2 { margin-left: 30px; border-left-color: var(--secondary); }
+        .hierarchy-level-3 { margin-left: 60px; border-left-color: #06B6D4; }
+        .hierarchy-level-4 { margin-left: 90px; border-left-color: var(--success); }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: white;
+            padding: 14px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+            display: none;
+            z-index: 1000;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--danger); }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            padding: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            border: 1px solid var(--border);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .modal-header h3 {
+            font-size: 18px;
+            color: var(--dark);
+        }
+
+        .close-modal {
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--gray);
+            transition: color 0.2s;
+        }
+        
+        .close-modal:hover {
+            color: var(--dark);
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--dark);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Company Setup Wizard</h1>
+            <p>Complete the initial setup to start using the Secure AI Chat System</p>
+        </div>
+
+        <div class="progress-steps" id="progressSteps">
+            <div class="step active" id="step1">
+                <div class="step-number">1</div>
+                <span>Company Info</span>
+            </div>
+            <div class="step" id="step2">
+                <div class="step-number">2</div>
+                <span>Departments</span>
+            </div>
+            <div class="step" id="step3">
+                <div class="step-number">3</div>
+                <span>Positions</span>
+            </div>
+            <div class="step" id="step4">
+                <div class="step-number">4</div>
+                <span>Complete</span>
+            </div>
+        </div>
+
+        <div class="setup-card">
+            <!-- Step 1: Company Information -->
+            <div id="step1Content">
+                <div class="card-header">
+                    <h2>Company Information</h2>
+                    <p>Enter your company details to get started</p>
+                </div>
+                <div class="card-body">
+                    <form id="companyForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Company Name *</label>
+                                <input type="text" id="companyName" required placeholder="e.g., Tech Solutions Sdn Bhd">
+                            </div>
+                            <div class="form-group">
+                                <label>Registration Number</label>
+                                <input type="text" id="registrationNumber" placeholder="e.g., 1234567-M">
+                            </div>
+                            <div class="form-group">
+                                <label>Tax ID / SST Number</label>
+                                <input type="text" id="taxId" placeholder="e.g., B12-3456-7890">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" id="phone" placeholder="e.g., +603-1234 5678">
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" id="email" placeholder="admin@company.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Website</label>
+                                <input type="url" id="website" placeholder="https://www.company.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Established Date</label>
+                                <input type="date" id="establishedDate">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Company Address</label>
+                            <textarea id="address" rows="3" placeholder="Full company address..."></textarea>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                            <button type="submit" class="btn-primary">Save & Continue</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Step 2: Departments -->
+            <div id="step2Content" style="display: none;">
+                <div class="card-header">
+                    <h2>Departments</h2>
+                    <p>Create departments for your organization</p>
+                </div>
+                <div class="card-body">
+                    <div style="margin-bottom: 24px;">
+                        <button onclick="showDepartmentModal()" class="btn-primary">+ Add Department</button>
+                    </div>
+                    <table class="data-table" id="departmentsTable">
+                        <thead>
+                            <tr><th>Department Name</th><th>Code</th><th>Description</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="departmentsList"></tbody>
+                    </table>
+                    <div style="display: flex; justify-content: flex-end; margin-top: 24px;">
+                        <button onclick="nextStep(3)" class="btn-primary">Continue</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Positions -->
+            <div id="step3Content" style="display: none;">
+                <div class="card-header">
+                    <h2>Positions & Hierarchy</h2>
+                    <p>Define organizational hierarchy and position permissions</p>
+                </div>
+                <div class="card-body">
+                    <div style="margin-bottom: 24px;">
+                        <button onclick="showPositionModal()" class="btn-primary">+ Add Position</button>
+                    </div>
+                    <div id="hierarchyView" class="hierarchy-view"></div>
+                    <div style="display: flex; justify-content: flex-end; margin-top: 24px;">
+                        <button onclick="completeSetup()" class="btn-success">Complete Setup</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Complete -->
+            <div id="step4Content" style="display: none;">
+                <div class="card-header">
+                    <h2>Setup Complete!</h2>
+                    <p>Your company is ready to use the Secure AI Chat System</p>
+                </div>
+                <div class="card-body" style="text-align: center; padding: 60px 40px;">
+                    <h3 style="margin-bottom: 16px; font-size: 22px; color: var(--dark);">Setup Completed Successfully!</h3>
+                    <p style="color: var(--gray); margin-bottom: 30px;">You can now:</p>
+                    <div style="background: var(--light); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: inline-block; text-align: left; margin-bottom: 30px;">
+                        <div style="margin-bottom: 10px;">- Users can register at /register</div>
+                        <div style="margin-bottom: 10px;">- Login with admin account (admin / admin123)</div>
+                        <div>- Start using the AI chat system</div>
+                    </div>
+                    <br>
+                    <a href="/login" class="btn-primary" style="text-decoration: none; display: inline-block;">Go to Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Department Modal -->
+    <div id="deptModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Department</h3>
+                <span class="close-modal" onclick="closeModal('deptModal')">x</span>
+            </div>
+            <form id="deptForm">
+                <div class="form-group">
+                    <label>Department Name *</label>
+                    <input type="text" id="deptName" required>
+                </div>
+                <div class="form-group">
+                    <label>Department Code</label>
+                    <input type="text" id="deptCode" placeholder="e.g., HR, IT, FIN">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="deptDesc" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Add Department</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Position Modal -->
+    <div id="posModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Position</h3>
+                <span class="close-modal" onclick="closeModal('posModal')">x</span>
+            </div>
+            <form id="posForm">
+                <div class="form-group">
+                    <label>Position Title *</label>
+                    <input type="text" id="posTitle" required>
+                </div>
+                <div class="form-grid" style="margin-bottom: 20px; gap: 15px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 13px;">Hierarchy Level (1=Highest)</label>
+                        <input type="number" id="posLevel" value="1" min="1" style="width: 100%; padding: 12px 14px; background: var(--light); border: 1px solid var(--border); border-radius: 10px;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 13px;">Reports To</label>
+                        <select id="posParent" style="width: 100%; padding: 12px 14px; background: var(--light); border: 1px solid var(--border); border-radius: 10px;"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Base Access Level</label>
+                    <select id="posAccess">
+                        <option value="Low">Low - Public Information Only</option>
+                        <option value="Medium">Medium - Confidential Information</option>
+                        <option value="High">High - Restricted Information</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Permissions</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label"><input type="checkbox" id="canApprove"> Can Approve Access</label>
+                        <label class="checkbox-label"><input type="checkbox" id="canUpload"> Can Upload Docs</label>
+                        <label class="checkbox-label"><input type="checkbox" id="canManage"> Can Manage Users</label>
+                        <label class="checkbox-label"><input type="checkbox" id="canAudit"> Can View Audit Logs</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="posDesc" rows="2"></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Add Position</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        let currentStep = 1;
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        }
+
+        function showModal(modalId) { document.getElementById(modalId).style.display = 'flex'; }
+        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
+
+        function nextStep(step) {
+            document.querySelectorAll('[id$="Content"]').forEach(el => el.style.display = 'none');
+            document.getElementById(`step${step}Content`).style.display = 'block';
+            
+            document.querySelectorAll('.step').forEach((el, idx) => {
+                el.classList.remove('active');
+                if (idx + 1 <= step) { el.classList.add('completed'); } 
+                else { el.classList.remove('completed'); }
+            });
+            document.getElementById(`step${step}`).classList.add('active');
+            
+            currentStep = step;
+            if (step === 2) loadDepartments();
+            if (step === 3) loadPositions();
+        }
+
+        document.getElementById('companyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                company_name: document.getElementById('companyName').value,
+                address: document.getElementById('address').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                registration_number: document.getElementById('registrationNumber').value,
+                tax_id: document.getElementById('taxId').value,
+                website: document.getElementById('website').value,
+                established_date: document.getElementById('establishedDate').value
+            };
+            try {
+                const response = await fetch('/api/company/setup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                if (result.success) { showToast('Company information saved!', 'success'); nextStep(2); } 
+                else { showToast('Error: ' + result.error, 'error'); }
+            } catch (error) { showToast('Error saving company information', 'error'); }
+        });
+
+        async function loadDepartments() {
+            try {
+                const response = await fetch('/api/departments');
+                const departments = await response.json();
+                const tbody = document.getElementById('departmentsList');
+                if (departments.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--gray);">No departments yet. Click "Add Department" to create one.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = departments.map(dept => `
+                    <tr>
+                        <td style="font-weight:500;">${escapeHtml(dept.name)}</td>
+                        <td><span style="background: var(--light); padding: 4px 8px; border-radius: 4px; font-family: monospace;">${escapeHtml(dept.code || '-')}</span></td>
+                        <td style="color: var(--gray);">${escapeHtml(dept.description || '-')}</td>
+                        <td><button class="btn-danger" onclick="deleteDepartment(${dept.id})">Delete</button></td>
+                    </tr>
+                `).join('');
+            } catch (error) { console.error('Error loading departments:', error); }
+        }
+
+        document.getElementById('deptForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                name: document.getElementById('deptName').value,
+                code: document.getElementById('deptCode').value,
+                description: document.getElementById('deptDesc').value
+            };
+            try {
+                const response = await fetch('/api/departments', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                if (result.success) {
+                    showToast('Department added!', 'success');
+                    closeModal('deptModal');
+                    document.getElementById('deptForm').reset();
+                    loadDepartments();
+                } else { showToast('Error: ' + result.error, 'error'); }
+            } catch (error) { showToast('Error adding department', 'error'); }
+        });
+
+        async function deleteDepartment(id) {
+            if (!confirm('Delete this department?')) return;
+            try {
+                const response = await fetch(`/api/departments/${id}`, { method: 'DELETE' });
+                const result = await response.json();
+                if (result.success) { showToast('Department deleted', 'success'); loadDepartments(); } 
+                else { showToast('Error deleting department', 'error'); }
+            } catch (error) { showToast('Error deleting department', 'error'); }
+        }
+
+        async function loadPositions() {
+            try {
+                const response = await fetch('/api/positions');
+                const positions = await response.json();
+                const hierarchyDiv = document.getElementById('hierarchyView');
+                
+                if (positions.length === 0) {
+                    hierarchyDiv.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 20px;">No positions yet. Click "Add Position" to create one.</p>';
+                    return;
+                }
+                
+                let html = '<div style="font-weight: 600; margin-bottom: 20px; color: var(--dark);">Organization Hierarchy</div>';
+                const byLevel = {};
+                positions.forEach(p => {
+                    if (!byLevel[p.level]) byLevel[p.level] = [];
+                    byLevel[p.level].push(p);
+                });
+                
+                Object.keys(byLevel).sort((a,b) => a-b).forEach(level => {
+                    byLevel[level].forEach(pos => {
+                        const levelClass = `hierarchy-level-${pos.level}`;
+                        html += `
+                            <div class="hierarchy-item ${levelClass}">
+                                <div>
+                                    <strong style="color: var(--dark);">${escapeHtml(pos.title)}</strong>
+                                    <span style="font-size: 11px; background: #EFF6FF; color: #1D4ED8; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">
+                                        Level ${pos.level} | ${pos.access_level} Access
+                                    </span>
+                                    ${pos.parent_title ? `<div style="font-size: 12px; color: var(--gray); margin-top: 4px;">Reports to: <b>${escapeHtml(pos.parent_title)}</b></div>` : '<div style="font-size: 12px; color: var(--success); margin-top: 4px; font-weight: 500;">Top Level</div>'}
+                                    <div style="font-size: 12px; color: var(--gray); margin-top: 6px; display: flex; gap: 8px;">
+                                        ${pos.can_approve_requests ? '<span style="background:var(--light); padding: 2px 6px; border-radius: 4px;">- Approve</span>' : ''}
+                                        ${pos.can_upload_documents ? '<span style="background:var(--light); padding: 2px 6px; border-radius: 4px;">- Upload</span>' : ''}
+                                        ${pos.can_manage_users ? '<span style="background:var(--light); padding: 2px 6px; border-radius: 4px;">- Users</span>' : ''}
+                                        ${pos.can_view_audit ? '<span style="background:var(--light); padding: 2px 6px; border-radius: 4px;">- Audit</span>' : ''}
+                                    </div>
+                                </div>
+                                <button class="btn-danger" onclick="deletePosition(${pos.id})">Delete</button>
+                            </div>
+                        `;
+                    });
+                });
+                
+                hierarchyDiv.innerHTML = html;
+                const parentSelect = document.getElementById('posParent');
+                parentSelect.innerHTML = '<option value="">None (Top Level)</option>';
+                positions.forEach(pos => {
+                    parentSelect.innerHTML += `<option value="${pos.id}">${escapeHtml(pos.title)} (Level ${pos.level})</option>`;
+                });
+            } catch (error) { console.error('Error loading positions:', error); }
+        }
+
+        document.getElementById('posForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                title: document.getElementById('posTitle').value,
+                level: parseInt(document.getElementById('posLevel').value),
+                parent_id: document.getElementById('posParent').value || null,
+                access_level: document.getElementById('posAccess').value,
+                can_approve_requests: document.getElementById('canApprove').checked ? 1 : 0,
+                can_upload_documents: document.getElementById('canUpload').checked ? 1 : 0,
+                can_manage_users: document.getElementById('canManage').checked ? 1 : 0,
+                can_view_audit: document.getElementById('canAudit').checked ? 1 : 0,
+                description: document.getElementById('posDesc').value
+            };
+            try {
+                const response = await fetch('/api/positions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                if (result.success) {
+                    showToast('Position added!', 'success');
+                    closeModal('posModal');
+                    document.getElementById('posForm').reset();
+                    loadPositions();
+                } else { showToast('Error: ' + result.error, 'error'); }
+            } catch (error) { showToast('Error adding position', 'error'); }
+        });
+
+        async function deletePosition(id) {
+            if (!confirm('Delete this position? This may affect users assigned to it.')) return;
+            try {
+                const response = await fetch(`/api/positions/${id}`, { method: 'DELETE' });
+                const result = await response.json();
+                if (result.success) { showToast('Position deleted', 'success'); loadPositions(); } 
+                else { showToast('Error deleting position', 'error'); }
+            } catch (error) { showToast('Error deleting position', 'error'); }
+        }
+
+        function completeSetup() { nextStep(4); }
+        function showDepartmentModal() { showModal('deptModal'); }
+        function showPositionModal() { showModal('posModal'); }
+        function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
+        
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) { event.target.style.display = 'none'; }
+        }
+    </script>
+</body>
+</html>

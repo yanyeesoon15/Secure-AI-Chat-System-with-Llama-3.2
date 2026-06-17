@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure AI Chat | CEO Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ef4444;
+            --primary-dark: #dc2626;
+            --secondary: #f97316;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --dark: #1f2937;
+            --gray: #6b7280;
+            --light: #f9fafb;
+            --border: #e5e7eb;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0 30px;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .logo h1 {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo p {
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: var(--light);
+            border-radius: 40px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+            font-size: 14px;
+        }
+
+        .user-details {
+            line-height: 1.3;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--dark);
+        }
+
+        .user-role {
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        .user-department {
+            font-size: 10px;
+            color: var(--gray);
+            margin-top: 2px;
+        }
+
+        .access-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .logout-btn {
+            background: white;
+            color: var(--dark);
+            border: 1px solid var(--border);
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #fee2e2;
+            color: #991b1b;
+            border-color: #fca5a5;
+        }
+
+        .main-container {
+            display: flex;
+            height: calc(100vh - 70px);
+            gap: 0;
+        }
+
+        .sidebar {
+            width: 520px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar::-webkit-scrollbar, 
+        .chat-messages::-webkit-scrollbar,
+        .documents-list::-webkit-scrollbar,
+        .privileges-list::-webkit-scrollbar,
+        .audit-logs::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track, 
+        .chat-messages::-webkit-scrollbar-track,
+        .documents-list::-webkit-scrollbar-track,
+        .privileges-list::-webkit-scrollbar-track,
+        .audit-logs::-webkit-scrollbar-track {
+            background: var(--light);
+        }
+
+        .sidebar::-webkit-scrollbar-thumb, 
+        .chat-messages::-webkit-scrollbar-thumb,
+        .documents-list::-webkit-scrollbar-thumb,
+        .privileges-list::-webkit-scrollbar-thumb,
+        .audit-logs::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .sidebar-section {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+
+        .upload-section {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--dark);
+        }
+
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 13px;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus, 
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-send {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-send:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .user-checklist-container {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: white;
+        }
+
+        .dept-group {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dept-group:last-child {
+            border-bottom: none;
+        }
+
+        .dept-header {
+            background: #F8FAFC;
+            padding: 10px 14px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #1E293B;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .user-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            cursor: pointer;
+            transition: background 0.15s;
+            border-bottom: 1px solid #F1F5F9;
+        }
+
+        .user-row:last-child {
+            border-bottom: none;
+        }
+
+        .user-row:hover {
+            background: #EFF6FF;
+        }
+
+        .user-row input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin: 0;
+        }
+
+        .user-info-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-info-text .user-name {
+            font-weight: 500;
+            font-size: 13px;
+            color: #1E293B;
+        }
+
+        .user-info-text .user-position {
+            font-size: 11px;
+            color: #64748B;
+            margin-top: 2px;
+        }
+
+        .recipient-info {
+            font-size: 11px;
+            color: var(--gray);
+            margin-top: 8px;
+            padding: 6px;
+            background: #fef3c7;
+            border-radius: 6px;
+        }
+
+        .privilege-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        .privilege-card:hover {
+            transform: translateX(2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+
+        .privilege-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .privilege-user {
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 14px;
+        }
+
+        .privilege-level {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .level-high { background: #fee2e2; color: #991b1b; }
+        .level-medium { background: #dbeafe; color: #1e40af; }
+
+        .privilege-details {
+            font-size: 11px;
+            color: var(--gray);
+            margin-top: 6px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .timer-badge {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
+
+        .documents-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .doc-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        .doc-title {
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 6px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .restricted-badge {
+            font-size: 10px;
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .doc-meta {
+            font-size: 11px;
+            color: var(--gray);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+
+        .classification-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .classification-badge.low { background: #fef3c7; color: #92400e; }
+        .classification-badge.medium { background: #dbeafe; color: #1e40af; }
+        .classification-badge.high { background: #fee2e2; color: #991b1b; }
+
+        .btn-view {
+            background: var(--info);
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-top: 8px;
+            margin-right: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-view:hover {
+            background: #2563eb;
+            transform: scale(1.05);
+        }
+
+        .btn-delete {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-delete:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
+
+        .request-card {
+            background: white;
+            border-left: 3px solid var(--warning);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        .request-card:hover {
+            transform: translateX(2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .request-user {
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 13px;
+        }
+
+        .request-level {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .btn-approve {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            margin-right: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-approve:hover {
+            background: #059669;
+            transform: scale(1.05);
+        }
+
+        .btn-reject {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.2s;
+        }
+
+        .btn-reject:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
+
+        .audit-logs {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .audit-entry {
+            background: var(--light);
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            font-size: 11px;
+            border-left: 3px solid var(--primary);
+            transition: all 0.2s;
+        }
+
+        .audit-timestamp {
+            color: var(--gray);
+            font-size: 10px;
+            margin-bottom: 4px;
+        }
+
+        .audit-action {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .filter-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 12px;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 12px 18px;
+            border-radius: 20px;
+            word-wrap: break-word;
+            line-height: 1.5;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.ai .message-content {
+            background: var(--light);
+            color: var(--dark);
+            border: 1px solid var(--border);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            font-size: 18px;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 12px 24px;
+            color: var(--gray);
+            font-size: 13px;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dots span {
+            width: 6px;
+            height: 6px;
+            background: var(--gray);
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-8px); }
+        }
+
+        .chat-input-area {
+            padding: 20px 24px;
+            background: white;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 2px solid var(--border);
+            border-radius: 24px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: none;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            max-width: 650px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .close-modal {
+            cursor: pointer;
+            font-size: 24px;
+            color: var(--gray);
+            transition: all 0.2s;
+        }
+
+        .close-modal:hover {
+            color: var(--danger);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-content-text {
+            white-space: pre-wrap;
+            line-height: 1.6;
+            background: var(--light);
+            padding: 15px;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            display: none;
+            align-items: center;
+            gap: 10px;
+            z-index: 2000;
+        }
+
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--danger); }
+        .toast.warning { border-left: 4px solid var(--warning); }
+
+        .report-suggestion-box {
+            background: #F0FDF4;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #86EFAC;
+            display: none;
+        }
+
+        .report-progress {
+            display: none;
+            text-align: center;
+            margin-top: 12px;
+            color: var(--gray);
+        }
+
+        .active-doc-indicator {
+            display: none;
+            background: #EFF6FF;
+            border: 1px solid #3B82F6;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #1E40AF;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { width: 350px; }
+            .message-content { max-width: 85%; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">C</div>
+            <div>
+                <h1>Secure AI Chat</h1>
+                <p>CEO Dashboard</p>
+            </div>
+        </div>
+        <div class="user-info">
+            <div class="user-card">
+                <div class="user-avatar" id="userAvatar">C</div>
+                <div class="user-details">
+                    <div class="user-name" id="username">{{ username }}</div>
+                    <div class="user-role" id="userPosition">{{ position }}</div>
+                    <div class="user-department" id="userDepartment">{{ department }}</div>
+                </div>
+            </div>
+            <span class="access-badge">High Clearance</span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <div class="section-title">System Statistics</div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="loginCount">0</div>
+                        <div class="stat-label">Logins (7d)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="failedLoginCount">0</div>
+                        <div class="stat-label">Failed Logins</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="uploadCount">0</div>
+                        <div class="stat-label">Documents</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="activePrivilegesCount">0</div>
+                        <div class="stat-label">Active Privileges</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="section-title">Active Temporary Privileges</div>
+                <div id="activePrivilegesList" class="privileges-list">
+                    <div style="text-align: center; color: var(--gray); padding: 20px;">Loading privileges...</div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="section-title">Upload Document</div>
+                <div class="upload-section">
+                    <div class="form-group">
+                        <label>Document Title *</label>
+                        <input type="text" id="docTitle" placeholder="e.g., Financial Report Q1 2024">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="docDescription" rows="2" placeholder="Brief description of the document"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Classification *</label>
+                        <select id="docClassification">
+                            <option value="low">LOW - Public Information</option>
+                            <option value="medium">MEDIUM - Confidential</option>
+                            <option value="high">HIGH - Highly Restricted</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Who can view this document? *</label>
+                        <select id="recipientType" onchange="toggleUserSelection()">
+                            <option value="all">Everyone (All users can view)</option>
+                            <option value="department">Specific Department Only</option>
+                            <option value="specific">Specific People Only</option>
+                        </select>
+                    </div>
+                    
+                    <div id="departmentSelectionDiv" style="display: none;">
+                        <div class="form-group">
+                            <label>Select department:</label>
+                            <select id="departmentSelect" class="filter-input">
+                                <option value="">Loading departments...</option>
+                            </select>
+                            <div class="recipient-info">Only users in the selected department can view this document.</div>
+                        </div>
+                    </div>
+                    
+                    <div id="userSelectionDiv" style="display: none;">
+                        <div class="form-group">
+                            <label>Select authorized users:</label>
+                            <div id="userChecklist" class="user-checklist-container">
+                                <div style="text-align: center; padding: 20px; color: var(--gray);">Loading users...</div>
+                            </div>
+                            <div class="recipient-info">Only selected users can view this document.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Document Content *</label>
+                        <textarea id="docContent" rows="5" placeholder="Enter document content here..."></textarea>
+                    </div>
+                    <button class="btn-primary" onclick="uploadDocument()" id="uploadBtn">Upload Document</button>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="section-title">All Documents</div>
+                <div id="documentsList" class="documents-list">
+                    <div style="text-align: center; color: var(--gray); padding: 20px;">Loading documents...</div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="section-title">Pending Access Requests</div>
+                <div id="requestsList">
+                    <div style="text-align: center; color: var(--gray); padding: 20px;">Loading requests...</div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="section-title">Audit Trail</div>
+                <input type="text" id="logFilter" class="filter-input" placeholder="Filter by action...">
+                <div id="auditLogsList" class="audit-logs">
+                    <div style="text-align: center; color: var(--gray); padding: 20px;">Loading logs...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-area">
+            <div id="chatMessages" class="chat-messages">
+                <div class="message ai">
+                    <div class="message-avatar">AI</div>
+                    <div class="message-content">
+                        <strong>Welcome, {{ position }} {{ username }}!</strong><br>
+                        <strong>Department:</strong> {{ department }}<br>
+                        <strong>Position:</strong> {{ position }}<br><br>
+                        You have the highest privileges in the system.<br>
+                        - Ask me anything about documents<br>
+                        - Generate Reports - Reply "yes csv" or "yes pdf" when offered<br>
+                        - Upload and manage documents<br>
+                        - Approve access requests<br><br>
+                        <strong>Tip:</strong> Click "View" on any document, then ask me questions about it!
+                    </div>
+                </div>
+            </div>
+            <div id="typingIndicator" class="typing-indicator">
+                <span>AI is thinking</span>
+                <div class="typing-dots"><span></span><span></span><span></span></div>
+            </div>
+            <div id="activeDocIndicator" class="active-doc-indicator"></div>
+            <div class="chat-input-area">
+                <textarea id="chatInput" class="chat-input" rows="2" placeholder="Ask me anything or request a report..."></textarea>
+                <button class="btn-send" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="docModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle"></h3>
+                <span class="close-modal" onclick="closeDocModal()">x</span>
+            </div>
+            <div class="modal-body">
+                <div class="modal-meta">
+                    <span class="classification-badge" id="modalClass">Low</span>
+                    <span>Uploader: <span id="modalUploader"></span></span>
+                    <span>Date: <span id="modalDate"></span></span>
+                    <span>Views: <span id="modalViews">0</span></span>
+                </div>
+                <div id="modalDescription" style="background: var(--light); padding: 12px; border-radius: 12px; margin-bottom: 15px; display: none;"></div>
+                <div id="modalContent" class="modal-content-text"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Generate Report</h3>
+                <span class="close-modal" onclick="closeReportModal()">x</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Describe the report you need:</label>
+                    <textarea id="reportQuery" rows="3" placeholder="e.g., Generate a monthly expense report for Q1 2026 in Excel, categorized by department..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Report Format:</label>
+                    <select id="reportFormat">
+                        <option value="excel">Excel (.xlsx) - Best for data analysis</option>
+                        <option value="pdf">PDF (.pdf) - Best for presentations</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" id="includeCharts" checked> Include charts and visualizations</label>
+                </div>
+                <div id="reportSuggestion" class="report-suggestion-box">
+                    <strong>AI Suggestion:</strong>
+                    <div id="suggestionContent"></div>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn-primary" onclick="analyzeAndSuggest()" style="flex: 1; background: var(--info);">Analyze Query</button>
+                    <button class="btn-send" onclick="generateReport()" style="flex: 1; border-radius: 10px;">Generate Report</button>
+                </div>
+                <div id="reportProgress" class="report-progress">
+                    <div class="spinner" style="border-color: rgba(239, 68, 68, 0.3); border-top-color: #ef4444;"></div> 
+                    <span>Generating report...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        let currentDocId = null;
+        let currentDocTitle = null;
+        let pendingReportData = null;
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        async function logout() {
+            window.location.href = '/logout';
+        }
+
+        async function loadAuditStats() {
+            try {
+                const response = await fetch('/get_audit_stats', { credentials: 'include' });
+                const data = await response.json();
+                document.getElementById('loginCount').textContent = data.logins || 0;
+                document.getElementById('failedLoginCount').textContent = data.failed_logins || 0;
+                document.getElementById('uploadCount').textContent = data.uploads || 0;
+            } catch (error) { console.error('Error loading stats:', error); }
+        }
+
+        async function loadActivePrivileges() {
+            try {
+                const response = await fetch('/get_active_privileges', { credentials: 'include' });
+                const data = await response.json();
+                const privilegesDiv = document.getElementById('activePrivilegesList');
+                document.getElementById('activePrivilegesCount').textContent = data.privileges ? data.privileges.length : 0;
+                
+                if (!data.privileges || data.privileges.length === 0) {
+                    privilegesDiv.innerHTML = '<div style="text-align: center; color: var(--gray); padding: 20px;">No active temporary privileges</div>';
+                    return;
+                }
+                
+                let html = '';
+                data.privileges.forEach(priv => {
+                    html += `
+                        <div class="privilege-card">
+                            <div class="privilege-header">
+                                <span class="privilege-user">${escapeHtml(priv.username)}</span>
+                                <span class="privilege-level level-${priv.granted_level.toLowerCase()}">${priv.granted_level}</span>
+                            </div>
+                            <div class="privilege-details">
+                                <div><strong>Position:</strong> ${escapeHtml(priv.position_title)}</div>
+                                <div><strong>Granted By:</strong> ${escapeHtml(priv.granted_by)}</div>
+                                <div><strong>Time:</strong> <span class="timer-badge">${priv.remaining_time}</span></div>
+                                <div><strong>Expires:</strong> ${new Date(priv.expires_at).toLocaleTimeString()}</div>
+                            </div>
+                            <button class="btn-danger" onclick="revokePrivilege(${priv.grant_id}, '${escapeHtml(priv.username)}', '${priv.granted_level}')">Revoke Access</button>
+                        </div>`;
+                });
+                privilegesDiv.innerHTML = html;
+            } catch (error) { console.error('Error loading privileges:', error); }
+        }
+
+        async function revokePrivilege(grantId, username, level) {
+            if (!confirm(`Revoke ${level} access from ${username}?`)) return;
+            try {
+                const response = await fetch('/revoke_privilege', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ grant_id: grantId }), credentials: 'include'
+                });
+                const data = await response.json();
+                if (data.success) { showToast(data.message, 'success'); loadActivePrivileges(); loadAuditLogs(); }
+                else { showToast(data.error || 'Failed', 'error'); }
+            } catch (error) { showToast('Error revoking privilege', 'error'); }
+        }
+
+        async function loadAuditLogs() {
+            const filter = document.getElementById('logFilter')?.value || '';
+            try {
+                const response = await fetch(`/get_audit_logs?limit=50&action=${filter}`, { credentials: 'include' });
+                const data = await response.json();
+                const logsDiv = document.getElementById('auditLogsList');
+                if (data.logs && data.logs.length > 0) {
+                    let html = '';
+                    data.logs.forEach(log => {
+                        html += `<div class="audit-entry">
+                            <div class="audit-timestamp">${new Date(log.timestamp).toLocaleString()}</div>
+                            <div><span class="audit-action">${log.action}</span> - ${escapeHtml(log.details)}</div>
+                            <div style="font-size: 10px; margin-top: 4px;">User: ${escapeHtml(log.username || 'System')}</div>
+                        </div>`;
+                    });
+                    logsDiv.innerHTML = html;
+                } else { logsDiv.innerHTML = '<div style="text-align: center; color: var(--gray); padding: 20px;">No logs found</div>'; }
+            } catch (error) { console.error('Error loading logs:', error); }
+        }
+
+        async function loadDepartments() {
+            try {
+                const response = await fetch('/api/departments/list', { credentials: 'include' });
+                const departments = await response.json();
+                const deptSelect = document.getElementById('departmentSelect');
+                if (departments.error) { deptSelect.innerHTML = '<option value="">Error</option>'; return; }
+                let html = '<option value="">Select a department</option>';
+                departments.forEach(dept => { html += `<option value="${dept.id}">${escapeHtml(dept.name)}</option>`; });
+                deptSelect.innerHTML = html;
+            } catch (error) { console.error('Error loading departments:', error); }
+        }
+
+        function toggleUserSelection() {
+            document.getElementById('departmentSelectionDiv').style.display = 'none';
+            document.getElementById('userSelectionDiv').style.display = 'none';
+            const type = document.getElementById('recipientType').value;
+            if (type === 'department') { document.getElementById('departmentSelectionDiv').style.display = 'block'; loadDepartments(); }
+            else if (type === 'specific') { document.getElementById('userSelectionDiv').style.display = 'block'; loadUsersForSelection(); }
+        }
+
+        async function loadUsersForSelection() {
+            try {
+                const response = await fetch('/api/users/for_selection', { credentials: 'include' });
+                const users = await response.json();
+                const checklist = document.getElementById('userChecklist');
+                if (users.error || !users.length) {
+                    checklist.innerHTML = '<div style="padding: 16px; text-align: center; color: #64748B;">No users available</div>';
+                    return;
+                }
+                users.sort((a, b) => (a.department_name || '').localeCompare(b.department_name || '') || (a.username || '').localeCompare(b.username || ''));
+                const grouped = {};
+                users.forEach(u => { const d = u.department_name || 'Other'; if (!grouped[d]) grouped[d] = []; grouped[d].push(u); });
+                let html = '';
+                for (const [dept, deptUsers] of Object.entries(grouped)) {
+                    html += `<div class="dept-group"><div class="dept-header">${escapeHtml(dept)}</div>`;
+                    deptUsers.forEach(user => {
+                        html += `<label class="user-row">
+                            <input type="checkbox" value="${user.id}" class="user-checkbox">
+                            <div class="user-info-text"><div class="user-name">${escapeHtml(user.username)}</div><div class="user-position">${escapeHtml(user.position_title || '')}</div></div>
+                        </label>`;
+                    });
+                    html += '</div>';
+                }
+                checklist.innerHTML = html;
+            } catch (error) { console.error('Error loading users:', error); }
+        }
+
+        async function uploadDocument() {
+            const title = document.getElementById('docTitle').value;
+            const content = document.getElementById('docContent').value;
+            if (!title || !content) { showToast('Please fill in all required fields', 'warning'); return; }
+            
+            const btn = document.getElementById('uploadBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<div class="spinner"></div> Uploading...';
+            
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('description', document.getElementById('docDescription').value);
+            formData.append('classification', document.getElementById('docClassification').value);
+            formData.append('content', content);
+            formData.append('recipient_type', document.getElementById('recipientType').value);
+            
+            const recipientType = document.getElementById('recipientType').value;
+            if (recipientType === 'department') {
+                const deptId = document.getElementById('departmentSelect').value;
+                if (!deptId) { showToast('Please select a department', 'warning'); btn.disabled = false; btn.innerHTML = 'Upload Document'; return; }
+                formData.append('restricted_department_id', deptId);
+            } else if (recipientType === 'specific') {
+                const checkboxes = document.querySelectorAll('#userChecklist input[type="checkbox"]:checked');
+                if (checkboxes.length === 0) { showToast('Please select at least one user', 'warning'); btn.disabled = false; btn.innerHTML = 'Upload Document'; return; }
+                checkboxes.forEach(cb => formData.append('selected_users', cb.value));
+            }
+            
+            try {
+                const response = await fetch('/upload_document', { method: 'POST', body: formData, credentials: 'include' });
+                const data = await response.json();
+                if (data.success) {
+                    showToast(`Document "${title}" uploaded!`, 'success');
+                    document.getElementById('docTitle').value = '';
+                    document.getElementById('docDescription').value = '';
+                    document.getElementById('docContent').value = '';
+                    document.getElementById('recipientType').value = 'all';
+                    document.getElementById('departmentSelectionDiv').style.display = 'none';
+                    document.getElementById('userSelectionDiv').style.display = 'none';
+                    loadDocuments(); loadAuditLogs(); loadAuditStats();
+                } else { showToast(data.error || 'Upload failed', 'error'); }
+            } catch (error) { showToast('Upload failed', 'error'); }
+            finally { btn.disabled = false; btn.innerHTML = 'Upload Document'; }
+        }
+
+        async function loadDocuments() {
+            try {
+                const response = await fetch('/get_documents', { credentials: 'include' });
+                const data = await response.json();
+                const docsDiv = document.getElementById('documentsList');
+                if (!data.documents || data.documents.length === 0) {
+                    docsDiv.innerHTML = '<div style="text-align: center; color: var(--gray); padding: 20px;">No documents available.</div>';
+                    return;
+                }
+                let html = '';
+                data.documents.forEach(doc => {
+                    html += `<div class="doc-item">
+                        <div class="doc-title">${escapeHtml(doc.title)}${doc.is_restricted ? '<span class="restricted-badge">Restricted</span>' : ''}</div>
+                        <div class="doc-meta">
+                            <span class="classification-badge ${doc.classification}">${doc.classification.toUpperCase()}</span>
+                            <span>Uploader: ${escapeHtml(doc.uploader_name)}</span>
+                            <span>Views: ${doc.download_count}</span>
+                        </div>
+                        <div>
+                            <button class="btn-view" onclick="viewDocument(${doc.id})">View</button>
+                            <button class="btn-delete" onclick="deleteDocument(${doc.id})">Delete</button>
+                        </div>
+                    </div>`;
+                });
+                docsDiv.innerHTML = html;
+            } catch (error) { console.error('Error loading documents:', error); }
+        }
+
+        async function viewDocument(docId) {
+            try {
+                const response = await fetch(`/view_document/${docId}`, { credentials: 'include' });
+                const data = await response.json();
+                
+                if (data.error) { showToast(data.error, 'error'); return; }
+                
+                currentDocId = docId;
+                currentDocTitle = data.title;
+                
+                updateDocIndicator();
+                
+                document.getElementById('modalTitle').textContent = data.title;
+                document.getElementById('modalClass').textContent = data.classification;
+                document.getElementById('modalClass').className = `classification-badge ${data.classification.toLowerCase()}`;
+                document.getElementById('modalUploader').textContent = data.uploader;
+                document.getElementById('modalDate').textContent = new Date(data.upload_date).toLocaleString();
+                document.getElementById('modalViews').textContent = data.views;
+                
+                if (data.description) {
+                    document.getElementById('modalDescription').style.display = 'block';
+                    document.getElementById('modalDescription').innerHTML = escapeHtml(data.description);
+                } else {
+                    document.getElementById('modalDescription').style.display = 'none';
+                }
+                
+                document.getElementById('modalContent').textContent = data.content || 'No content available';
+                document.getElementById('docModal').style.display = 'flex';
+                
+                addMessage(`Document opened: "${data.title}". You can now ask me questions about this document.`, 'ai');
+                
+            } catch (error) { showToast('Error viewing document', 'error'); }
+        }
+
+        function updateDocIndicator() {
+            const indicator = document.getElementById('activeDocIndicator');
+            if (currentDocId) {
+                indicator.style.display = 'block';
+                indicator.innerHTML = `Active document: <strong>${escapeHtml(currentDocTitle)}</strong> (ID: ${currentDocId}) | <a href="#" onclick="clearDocReference()" style="color:#EF4444;">Clear</a>`;
+            } else {
+                indicator.style.display = 'none';
+            }
+        }
+
+        function clearDocReference() {
+            currentDocId = null;
+            currentDocTitle = null;
+            updateDocIndicator();
+            addMessage('Document reference cleared. You can select another document to analyze.', 'ai');
+        }
+
+        function closeDocModal() {
+            document.getElementById('docModal').style.display = 'none';
+        }
+
+        async function deleteDocument(docId) {
+            if (!confirm('Delete this document?')) return;
+            try {
+                const response = await fetch(`/delete_document/${docId}`, { method: 'DELETE', credentials: 'include' });
+                const data = await response.json();
+                if (data.success) {
+                    if (currentDocId === docId) { currentDocId = null; currentDocTitle = null; updateDocIndicator(); }
+                    showToast('Document deleted', 'success');
+                    loadDocuments(); loadAuditLogs(); loadAuditStats();
+                } else { showToast(data.error || 'Delete failed', 'error'); }
+            } catch (error) { showToast('Error deleting document', 'error'); }
+        }
+
+        async function loadRequests() {
+            try {
+                const response = await fetch('/get_access_requests', { credentials: 'include' });
+                const data = await response.json();
+                const requestsList = document.getElementById('requestsList');
+                const pending = data.requests ? data.requests.filter(r => r.status === 'pending') : [];
+                if (pending.length > 0) {
+                    let html = '';
+                    pending.forEach(req => {
+                        html += `<div class="request-card">
+                            <div class="request-header"><span class="request-user">${escapeHtml(req.username)} (${escapeHtml(req.requester_role)})</span><span class="request-level">${req.requested_level}</span></div>
+                            <div style="font-size: 12px; margin-bottom: 8px;"><strong>Reason:</strong> ${escapeHtml(req.reason)}</div>
+                            <div style="font-size: 11px; color: var(--gray); margin-bottom: 10px;">${new Date(req.timestamp).toLocaleString()}</div>
+                            <button onclick="reviewRequest('${req.id}', 'approved')" class="btn-approve">Approve (2h)</button>
+                            <button onclick="reviewRequest('${req.id}', 'rejected')" class="btn-reject">Reject</button>
+                        </div>`;
+                    });
+                    requestsList.innerHTML = html;
+                } else { requestsList.innerHTML = '<div style="text-align: center; color: var(--gray); padding: 20px;">No pending requests</div>'; }
+            } catch (error) { console.error('Error loading requests:', error); }
+        }
+
+        async function reviewRequest(requestId, decision) {
+            const notes = prompt(`Notes for ${decision}:`);
+            if (notes === null) return;
+            try {
+                const response = await fetch('/review_request', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ request_id: requestId, decision, notes }), credentials: 'include'
+                });
+                const data = await response.json();
+                if (data.success || data.message) { showToast(data.message || 'Done', 'success'); loadRequests(); loadActivePrivileges(); }
+                else { showToast(data.error || 'Failed', 'error'); }
+            } catch (error) { showToast('Failed to review request', 'error'); }
+        }
+
+        function openReportModal() {
+            document.getElementById('reportModal').style.display = 'flex';
+            document.getElementById('reportQuery').focus();
+            document.getElementById('reportSuggestion').style.display = 'none';
+            document.getElementById('reportProgress').style.display = 'none';
+        }
+
+        function closeReportModal() {
+            document.getElementById('reportModal').style.display = 'none';
+        }
+
+        async function analyzeAndSuggest() {
+            const query = document.getElementById('reportQuery').value.trim();
+            if (!query) { showToast('Please describe what report you need', 'warning'); return; }
+            try {
+                const response = await fetch('/api/suggest_report', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: query }), credentials: 'include'
+                });
+                const data = await response.json();
+                if (data.success && data.suggestion) {
+                    const s = data.suggestion;
+                    document.getElementById('reportSuggestion').style.display = 'block';
+                    document.getElementById('suggestionContent').innerHTML = `
+                        <p><strong>Type:</strong> ${s.report_type.replace('_', ' ').toUpperCase()}</p>
+                        <p><strong>Title:</strong> ${escapeHtml(s.title)}</p>
+                        <p><strong>Format:</strong> ${s.format.toUpperCase()}</p>
+                    `;
+                    document.getElementById('reportFormat').value = s.format;
+                }
+            } catch (error) { showToast('Error analyzing query', 'error'); }
+        }
+
+        async function generateReport() {
+            const query = document.getElementById('reportQuery').value.trim();
+            const format = document.getElementById('reportFormat').value;
+            if (!query) { showToast('Please describe what report you need', 'warning'); return; }
+            
+            let title = 'Generated Report';
+            const st = document.querySelector('#suggestionContent p:nth-child(2)');
+            if (st) title = st.textContent.replace('Title:', '').trim();
+            
+            document.getElementById('reportProgress').style.display = 'block';
+            
+            try {
+                const response = await fetch('/api/generate_report', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: query, report_type: format, title: title, include_charts: document.getElementById('includeCharts').checked }),
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `report_${new Date().toISOString().split('T')[0]}.${format === 'excel' ? 'xlsx' : 'pdf'}`;
+                    document.body.appendChild(a); a.click(); a.remove();
+                    window.URL.revokeObjectURL(url);
+                    showToast('Report downloaded!', 'success');
+                    closeReportModal();
+                } else {
+                    const error = await response.json();
+                    showToast(error.error || 'Error', 'error');
+                }
+            } catch (error) { showToast('Error generating report', 'error'); }
+            finally { document.getElementById('reportProgress').style.display = 'none'; }
+        }
+
+        // ==================== MAIN CHAT FUNCTIONS ====================
+        async function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+    if (!message) return;
+    
+    // ========== FIX: Check for report confirmation FIRST ==========
+    // This prevents "yes pdf" from being sent to the AI
+    if (message.toLowerCase().includes('yes') && (message.toLowerCase().includes('csv') || message.toLowerCase().includes('pdf'))) {
+        if (pendingReportData) {
+            await handleReportFromChat(message);
+            input.value = '';
+            return;
+        } else {
+            addMessage('Please ask a question about your data first.', 'ai');
+            input.value = '';
+            return;
+        }
+    }
+    // ========== END OF FIX ==========
+    
+    // Normal message - add to chat and send to AI
+    addMessage(message, 'user');
+    input.value = '';
+    
+    const typingIndicator = document.getElementById('typingIndicator');
+    typingIndicator.style.display = 'flex';
+    
+    try {
+        let requestBody = { question: message };
+        if (currentDocId) {
+            requestBody.doc_id = currentDocId;
+        }
+        
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody),
+            credentials: 'include'
+        });
+        const data = await response.json();
+        typingIndicator.style.display = 'none';
+        
+        if (data.answer) {
+            addMessage(data.answer, 'ai');
+        }
+        
+        // Only trigger if Python backend EXPLICITLY detects the user asking for a report
+        if (data.suggest_report) {
+            pendingReportData = {
+                doc_id: data.doc_id || currentDocId,
+                query: message,
+                ai_answer: data.answer,
+                report_context: data.report_context || {}
+            };
+            
+            // Only add the prompt if not already there
+            if (!data.answer.toLowerCase().includes('would you like me to generate')) {
+                setTimeout(() => {
+                    addMessage('Would you like me to generate a file from this data? Reply "yes csv" or "yes pdf".', 'ai');
+                }, 500);
+            }
+        }
+        
+    } catch (error) {
+        typingIndicator.style.display = 'none';
+        addMessage('Network error. Please try again.', 'ai');
+    }
+}
+
+        async function handleReportFromChat(userMessage) {
+            // Detect format - PDF first, then CSV
+            let format = 'csv';
+            if (userMessage.toLowerCase().includes('pdf')) {
+                format = 'pdf';
+            } else if (userMessage.toLowerCase().includes('csv')) {
+                format = 'csv';
+            }
+            
+            console.log("Generating format:", format);
+            console.log("Has pendingReportData:", !!pendingReportData);
+            console.log("Has ai_answer:", !!(pendingReportData && pendingReportData.ai_answer));
+            
+            if (pendingReportData && pendingReportData.ai_answer) {
+                addMessage(`Generating ${format.toUpperCase()} report from the analysis...`, 'ai');
+                
+                try {
+                    if (format === 'csv') {
+                        // Generate CSV
+                        const csvResp = await fetch('/api/chat', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ 
+                                question: `Based on this analysis: ${pendingReportData.ai_answer.substring(0, 1500)} - give me ONLY the data as CSV format. No explanations, no markdown, just pure CSV with headers.`,
+                                doc_id: pendingReportData.doc_id 
+                            }),
+                            credentials: 'include'
+                        });
+                        const csvData = await csvResp.json();
+                        
+                        if (csvData.answer) {
+                            let csvText = csvData.answer;
+                            csvText = csvText.replace(/```csv\n?/g, '').replace(/```\n?/g, '').trim();
+                            
+                            const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8;' });
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `report_${new Date().toISOString().split('T')[0]}.csv`;
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                            window.URL.revokeObjectURL(url);
+                            
+                            addMessage('CSV file downloaded! Open it in Excel to view and format.', 'ai');
+                        } else {
+                            addMessage('Could not generate CSV file. Try again.', 'ai');
+                        }
+                    } 
+                    else if (format === 'pdf') {
+
+                        // Generate a simple title based on the user's query
+                        let title = "Report";
+                        const queryLower = pendingReportData.query.toLowerCase();
+                        if (queryLower.includes('sales')) {
+                            title = "Sales Report";
+                        } else if (queryLower.includes('salary')) {
+                            title = "Salary Report";
+                        } else if (queryLower.includes('employee')) {
+                            title = "Employee Report";
+                        } else if (queryLower.includes('q1') || queryLower.includes('quarter')) {
+                            title = "Quarterly Report";
+                        } else {
+                            title = "Analysis Report";
+                        }
+                        
+                        const reportResp = await fetch('/api/generate_report_from_analysis', {
+                            method: 'POST', 
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ 
+                                analysis_data: {
+                                    answer: pendingReportData.ai_answer,
+                                    analysis: pendingReportData.ai_answer,
+                                    report_type: "general",
+                                    extracted_data: []
+                                }, 
+                                report_type: 'pdf', 
+                                title: title,
+                                include_charts: false,
+                                report_context: { 
+                                    query: pendingReportData.query,
+                                    ai_answer: pendingReportData.ai_answer
+                                }
+                            }),
+                            credentials: 'include'
+                        });
+
+                        if (reportResp.ok) {
+                            const blob = await reportResp.blob();
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `report_${new Date().toISOString().split('T')[0]}.pdf`;
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                            window.URL.revokeObjectURL(url);
+                            addMessage('PDF report downloaded successfully!', 'ai');
+                        } else {
+                            const error = await reportResp.json();
+                            addMessage('PDF generation failed: ' + (error.error || 'Unknown error'), 'ai');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Report generation error:', error);
+                    addMessage(`Error: ${error.message}`, 'ai');
+                }
+            } else {
+                addMessage('Please ask a question about your data first (e.g., "Show me all employee salaries"), then I can generate a report.', 'ai');
+            }
+            
+            pendingReportData = null;
+        }
+
+        function addMessage(text, sender) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            const avatar = sender === 'user' ? 'U' : 'AI';
+            messageDiv.innerHTML = `
+                ${sender === 'ai' ? `<div class="message-avatar">${avatar}</div>` : ''}
+                <div class="message-content">${escapeHtml(text).replace(/\n/g, '<br>')}</div>
+                ${sender === 'user' ? `<div class="message-avatar">${avatar}</div>` : ''}
+            `;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        document.getElementById('chatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+        });
+
+        document.getElementById('logFilter').addEventListener('input', () => { loadAuditLogs(); });
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) { event.target.style.display = 'none'; }
+        };
+
+        window.onload = () => {
+            loadAuditStats();
+            loadActivePrivileges();
+            loadAuditLogs();
+            loadDocuments();
+            loadRequests();
+            document.getElementById('chatInput').focus();
+            
+            setInterval(() => {
+                loadActivePrivileges();
+                loadAuditStats();
+                loadAuditLogs();
+                loadDocuments();
+                loadRequests();
+            }, 30000);
+        };
+
+        document.getElementById('userAvatar').textContent = document.getElementById('username').textContent.charAt(0).toUpperCase();
+    </script>
+</body>
+</html>

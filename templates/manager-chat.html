@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure AI Chat | Manager Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f59e0b;
+            --primary-dark: #d97706;
+            --secondary: #f97316;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --dark: #1f2937;
+            --gray: #6b7280;
+            --light: #f9fafb;
+            --border: #e5e7eb;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0 30px;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo h1 {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo p {
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: var(--light);
+            border-radius: 40px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+
+        .user-details {
+            line-height: 1.3;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--dark);
+        }
+
+        .user-role {
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        .user-department {
+            font-size: 10px;
+            color: var(--gray);
+            margin-top: 2px;
+        }
+
+        .access-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .access-badge.low { background: #fef3c7; color: #92400e; }
+        .access-badge.medium { background: #dbeafe; color: #1e40af; }
+        .access-badge.high { background: #fee2e2; color: #991b1b; }
+
+        .logout-btn {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .main-container {
+            display: flex;
+            height: calc(100vh - 70px);
+            gap: 0;
+        }
+
+        .sidebar {
+            width: 520px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar-section {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-card {
+            background: linear-gradient(135deg, #fff7ed, #ffedd5);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .status-label {
+            font-size: 13px;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        .status-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .access-timer {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 12px;
+            text-align: center;
+            display: none;
+        }
+
+        .timer-label {
+            font-size: 11px;
+            color: var(--gray);
+            margin-bottom: 4px;
+        }
+
+        .countdown {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--success);
+            font-family: monospace;
+        }
+
+        .upload-section {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--dark);
+        }
+
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 13px;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus, 
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-send {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-send:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        .user-checklist {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px;
+            background: white;
+        }
+
+        .user-checklist .dept-group {
+            margin-bottom: 12px;
+        }
+
+        .user-checklist .dept-title {
+            font-weight: 600;
+            margin-top: 8px;
+            margin-bottom: 4px;
+            padding: 4px 0;
+            color: var(--primary);
+            font-size: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .user-checklist .user-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .user-checklist .user-item:hover {
+            background: var(--light);
+        }
+
+        .user-checklist .user-item input {
+            width: auto;
+            margin: 0;
+        }
+
+        .user-checklist .user-name {
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .user-checklist .user-position {
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        .recipient-info {
+            font-size: 11px;
+            color: var(--gray);
+            margin-top: 8px;
+            padding: 6px;
+            background: #fef3c7;
+            border-radius: 6px;
+        }
+
+        .documents-list {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .doc-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        .doc-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+
+        .doc-title {
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 6px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .doc-meta {
+            font-size: 11px;
+            color: var(--gray);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+
+        .classification-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .classification-badge.low { background: #fef3c7; color: #92400e; }
+        .classification-badge.medium { background: #dbeafe; color: #1e40af; }
+        .classification-badge.high { background: #fee2e2; color: #991b1b; }
+
+        .btn-view {
+            background: var(--info);
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-view:hover {
+            background: #2563eb;
+            transform: scale(1.05);
+        }
+
+        .request-high-section {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .request-high-section textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 13px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 60px;
+            max-height: 120px;
+        }
+
+        .request-high-section textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        .request-card {
+            background: white;
+            border-left: 5px solid var(--warning);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .request-card:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .request-user {
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 13px;
+        }
+
+        .request-level {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .request-reason {
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 8px;
+        }
+
+        .request-date {
+            font-size: 10px;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+
+        .btn-approve {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            margin-right: 8px;
+        }
+
+        .btn-approve:hover {
+            background: #059669;
+            transform: scale(1.05);
+        }
+
+        .btn-reject {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .btn-reject:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
+
+        .requests-list {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .request-item {
+            background: white;
+            border-left: 3px solid var(--warning);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .request-status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-approved { background: #d1fae5; color: #065f46; }
+        .status-rejected { background: #fee2e2; color: #991b1b; }
+        .status-expired { background: #f3f4f6; color: #6b7280; }
+        .status-revoked { background: #fee2e2; color: #991b1b; }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--gray);
+            font-size: 13px;
+        }
+
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 12px 18px;
+            border-radius: 20px;
+            word-wrap: break-word;
+            line-height: 1.5;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.ai .message-content {
+            background: var(--light);
+            color: var(--dark);
+            border: 1px solid var(--border);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            font-size: 18px;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 12px 24px;
+            color: var(--gray);
+            font-size: 13px;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dots span {
+            width: 6px;
+            height: 6px;
+            background: var(--gray);
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-8px); }
+        }
+
+        .chat-input-area {
+            padding: 20px 24px;
+            background: white;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 2px solid var(--border);
+            border-radius: 24px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: none;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .close-modal {
+            cursor: pointer;
+            font-size: 28px;
+            color: var(--gray);
+            transition: all 0.2s;
+        }
+
+        .close-modal:hover {
+            color: var(--danger);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-content-text {
+            white-space: pre-wrap;
+            line-height: 1.6;
+            background: var(--light);
+            padding: 15px;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            display: none;
+            align-items: center;
+            gap: 10px;
+            z-index: 2000;
+        }
+
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--danger); }
+        .toast.warning { border-left: 4px solid var(--warning); }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 350px;
+            }
+            .message-content {
+                max-width: 85%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            <div>
+                <h1>Secure AI Chat</h1>
+                <p>Manager Dashboard</p>
+            </div>
+        </div>
+        <div class="user-info">
+            <div class="user-card">
+                <div class="user-avatar" id="userAvatar">M</div>
+                <div class="user-details">
+                    <div class="user-name" id="username">{{ username }}</div>
+                    <div class="user-role" id="userPosition">{{ position }}</div>
+                    <div class="user-department" id="userDepartment">{{ department }}</div>
+                </div>
+            </div>
+            <span class="access-badge medium" id="accessBadge">Medium</span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <div class="section-title">Access Status</div>
+                <div class="status-card">
+                    <div class="status-row">
+                        <span class="status-label">Role:</span>
+                        <span class="status-value">Manager</span>
+                    </div>
+                    <div class="status-row">
+                        <span class="status-label">Base Access:</span>
+                        <span class="status-value">MEDIUM</span>
+                    </div>
+                    <div class="status-row">
+                        <span class="status-label">Current Access:</span>
+                        <span class="status-value" id="currentAccessLevel">Medium</span>
+                    </div>
+                    <div id="accessTimer" class="access-timer">
+                        <div class="timer-label">HIGH Access Remaining</div>
+                        <div id="countdown" class="countdown">00:00</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="section-title">Upload Document</div>
+                <div class="upload-section">
+                    <div class="form-group">
+                        <label>Document Title *</label>
+                        <input type="text" id="docTitle" placeholder="e.g., Financial Report Q1 2024">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="docDescription" rows="2" placeholder="Brief description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Classification *</label>
+                        <select id="docClassification">
+                            <option value="low">LOW - Public</option>
+                            <option value="medium">MEDIUM - Confidential</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Who can view? *</label>
+                        <select id="recipientType" onchange="toggleUserSelection()">
+                            <option value="all">Everyone (All users can view)</option>
+                            <option value="department">Specific Department Only</option>
+                            <option value="specific">Specific People Only</option>
+                        </select>
+                    </div>
+                    
+                    <div id="departmentSelectionDiv" style="display: none;">
+                        <div class="form-group">
+                            <label>Select department:</label>
+                            <select id="departmentSelect" class="filter-input">
+                                <option value="">Loading departments...</option>
+                            </select>
+                            <div class="recipient-info">
+                                Only users in the selected department can view this document.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="userSelectionDiv" style="display: none;">
+                        <div class="form-group">
+                            <label>Select authorized users:</label>
+                            <div id="userChecklist" class="user-checklist">
+                                <div class="empty-state">Loading users...</div>
+                            </div>
+                            <div class="recipient-info">
+                                Only selected users can view this document.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Document Content *</label>
+                        <textarea id="docContent" rows="5" placeholder="Enter document content..."></textarea>
+                    </div>
+                    <button class="btn-primary" onclick="uploadDocument()" id="uploadBtn">Upload Document</button>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="section-title">Available Documents</div>
+                <div id="documentsList" class="documents-list">
+                    <div class="empty-state">Loading documents...</div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="section-title">Request HIGH Access</div>
+                <div class="request-high-section">
+                    <textarea id="highAccessReason" rows="3" placeholder="Reason for requesting HIGH access..."></textarea>
+                    <button class="btn-primary" style="margin-top: 12px;" onclick="requestHighAccess()" id="requestHighBtn">Submit Request to Admin</button>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="section-title">Pending Employee Requests</div>
+                <div id="requestsList" class="requests-list">
+                    <div class="empty-state">Loading requests...</div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="section-title">My Requests</div>
+                <div id="myRequests" class="requests-list">
+                    <div class="empty-state">No requests yet</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-area">
+            <div id="chatMessages" class="chat-messages">
+                <div class="message ai">
+                    <div class="message-avatar">AI</div>
+                    <div class="message-content">
+                        <strong>Welcome, {{ position }} {{ username }}!</strong><br>
+                        <strong>Department:</strong> {{ department }}<br>
+                        <strong>Position:</strong> {{ position }}<br><br>
+                        I'm your AI assistant with document access:<br>
+                        - Chat about anything<br>
+                        - Upload documents<br>
+                        - Restrict document access<br>
+                        - View documents<br>
+                        - Approve employee requests<br>
+                        - Request HIGH access (2 hours)<br><br>
+                        Your current access: <strong id="welcomeAccessMessage">MEDIUM</strong><br>
+                        What would you like to chat about today?
+                    </div>
+                </div>
+            </div>
+            <div id="typingIndicator" class="typing-indicator">
+                <span>AI is thinking</span>
+                <div class="typing-dots"><span></span><span></span><span></span></div>
+            </div>
+            <div class="chat-input-area">
+                <textarea id="chatInput" class="chat-input" rows="2" placeholder="Ask me anything..."></textarea>
+                <button class="btn-send" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="docModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle"></h3>
+                <span class="close-modal" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="modal-meta">
+                    <span class="classification-badge" id="modalClass">Low</span>
+                    <span>Uploader: <span id="modalUploader"></span></span>
+                    <span>Date: <span id="modalDate"></span></span>
+                    <span>Views: <span id="modalViews">0</span></span>
+                </div>
+                <div id="modalDescription" style="background: var(--light); padding: 12px; border-radius: 12px; margin-bottom: 15px; display: none;"></div>
+                <div id="modalContent" class="modal-content-text"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        let currentAccessLevel = 'Medium';
+        let pendingReportData = null;
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.style.display = 'flex';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        async function logout() {
+            window.location.href = '/logout';
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function addMessage(text, sender) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            const avatar = sender === 'user' ? 'U' : 'AI';
+            messageDiv.innerHTML = `
+                ${sender === 'ai' ? `<div class="message-avatar">${avatar}</div>` : ''}
+                <div class="message-content">${escapeHtml(text).replace(/\n/g, '<br>')}</div>
+                ${sender === 'user' ? `<div class="message-avatar">${avatar}</div>` : ''}
+            `;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // UPDATED: Completely independent state control function
+        async function checkAccessStatus() {
+    try {
+        const response = await fetch('/check_access_status', { credentials: 'include' });
+        const data = await response.json();
+        
+        currentAccessLevel = data.current_access_level;
+        const currentAccessSpan = document.getElementById('currentAccessLevel');
+        const welcomeMessage = document.getElementById('welcomeAccessMessage');  // ← Correct ID for manager
+        const accessBadge = document.getElementById('accessBadge');
+        const timerDiv = document.getElementById('accessTimer');
+        
+        if (currentAccessLevel === 'High') {
+            currentAccessSpan.textContent = 'HIGH (Temporary)';
+            welcomeMessage.innerHTML = '<strong style="color: #dc2626;">HIGH (Temporary - 2 hours)</strong>';
+            accessBadge.textContent = 'High (Temp)';
+            accessBadge.className = 'access-badge high';
+            
+            if (window.countdownInterval) {
+                clearInterval(window.countdownInterval);
+                window.countdownInterval = null;
+            }
+            
+            if (data.active_grants && data.active_grants.length > 0) {
+                const expiresInMinutes = data.active_grants[0].expires_in_minutes;
+                if (expiresInMinutes > 0) {
+                    showTimer(expiresInMinutes);
+                } 
+            }
+        } else {
+            currentAccessSpan.textContent = 'Medium';
+            welcomeMessage.innerHTML = 'MEDIUM';
+            accessBadge.textContent = 'Medium';
+            accessBadge.className = 'access-badge medium';
+            
+            if (window.countdownInterval) {
+                clearInterval(window.countdownInterval);
+                window.countdownInterval = null;
+            }
+            if (timerDiv) {
+                timerDiv.style.display = 'none';
+            }
+        }
+        
+        loadDocuments();
+        loadRequests();
+        loadMyRequests();
+        
+    } catch (error) {
+        console.error('Error checking access status:', error);
+    }
+}
+
+        // UPDATED: Clear visual metrics accurately when ticking down to 00:00
+        function showTimer(minutes) {
+    const timerDiv = document.getElementById('accessTimer');
+    timerDiv.style.display = 'block';
+    
+    // Clear any existing interval
+    if (window.countdownInterval) {
+        clearInterval(window.countdownInterval);
+    }
+    
+    let remainingSeconds = minutes * 60;
+    
+    async function updateTimer() {
+        if (remainingSeconds <= 0) {
+            // Timer hit zero - stop the interval
+            if (window.countdownInterval) {
+                clearInterval(window.countdownInterval);
+                window.countdownInterval = null;
+            }
+            
+            timerDiv.style.display = 'none';
+            
+            // IMPORTANT: Tell the server to revoke the access
+            try {
+                const response = await fetch('/api/force_revoke_check', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                if (data.revoked > 0) {
+                    showToast('Your temporary access has expired', 'warning');
+                }
+            } catch(e) {
+                console.error('Force revoke failed:', e);
+            }
+            
+            // Refresh the access status (this will show "Low" access)
+            await checkAccessStatus();
+            return;
+        }
+        
+        // Update the display
+        const mins = Math.floor(remainingSeconds / 60);
+        const secs = remainingSeconds % 60;
+        const countdownElement = document.getElementById('countdown');
+        if (countdownElement) {
+            countdownElement.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        remainingSeconds--;
+    }
+    
+    // Run immediately
+    updateTimer();
+    
+    // Then every second
+    window.countdownInterval = setInterval(updateTimer, 1000);
+}
+
+        async function loadDepartments() {
+            try {
+                const response = await fetch('/api/departments/list', { credentials: 'include' });
+                const departments = await response.json();
+                const deptSelect = document.getElementById('departmentSelect');
+                
+                if (departments.error) {
+                    deptSelect.innerHTML = '<option value="">Error loading departments</option>';
+                    return;
+                }
+                
+                let html = '<option value="">Select a department</option>';
+                departments.forEach(dept => {
+                    html += `<option value="${dept.id}">${escapeHtml(dept.name)}</option>`;
+                });
+                deptSelect.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading departments:', error);
+            }
+        }
+
+        function toggleUserSelection() {
+            const recipientType = document.getElementById('recipientType').value;
+            const departmentDiv = document.getElementById('departmentSelectionDiv');
+            const userDiv = document.getElementById('userSelectionDiv');
+            
+            departmentDiv.style.display = 'none';
+            userDiv.style.display = 'none';
+            
+            if (recipientType === 'department') {
+                departmentDiv.style.display = 'block';
+                loadDepartments();
+            } else if (recipientType === 'specific') {
+                userDiv.style.display = 'block';
+                loadUsersForSelection();
+            }
+        }
+
+        async function loadUsersForSelection() {
+            try {
+                const response = await fetch('/api/users/for_selection', { credentials: 'include' });
+                const users = await response.json();
+                const checklist = document.getElementById('userChecklist');
+                
+                if (users.error) {
+                    checklist.innerHTML = `<div class="empty-state">Error loading users</div>`;
+                    return;
+                }
+                
+                if (users.length === 0) {
+                    checklist.innerHTML = `<div class="empty-state">No other users found</div>`;
+                    return;
+                }
+                
+                const grouped = {};
+                users.forEach(user => {
+                    const dept = user.department_name || 'Other';
+                    if (!grouped[dept]) grouped[dept] = [];
+                    grouped[dept].push(user);
+                });
+                
+                let html = '';
+                for (const [dept, deptUsers] of Object.entries(grouped)) {
+                    html += `<div class="dept-group"><div class="dept-title">${escapeHtml(dept)}</div>`;
+                    deptUsers.forEach(user => {
+                        html += `
+                            <label class="user-item">
+                                <input type="checkbox" name="selected_users" value="${user.id}" class="user-checkbox">
+                                <div>
+                                    <div class="user-name">${escapeHtml(user.username)}</div>
+                                    <div class="user-position">${escapeHtml(user.position_title)}</div>
+                                </div>
+                            </label>
+                        `;
+                    });
+                    html += `</div>`;
+                }
+                checklist.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading users:', error);
+                document.getElementById('userChecklist').innerHTML = '<div class="empty-state">Error loading users</div>';
+            }
+        }
+
+        async function uploadDocument() {
+            const title = document.getElementById('docTitle').value;
+            const description = document.getElementById('docDescription').value;
+            const classification = document.getElementById('docClassification').value;
+            const content = document.getElementById('docContent').value;
+            const recipientType = document.getElementById('recipientType').value;
+
+            if (!title) {
+                showToast('Please enter a document title', 'warning');
+                return;
+            }
+            if (!content) {
+                showToast('Please enter document content', 'warning');
+                return;
+            }
+
+            const btn = document.getElementById('uploadBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<div class="spinner"></div> Uploading...';
+
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('description', description);
+            formData.append('classification', classification);
+            formData.append('content', content);
+            formData.append('recipient_type', recipientType);
+            
+            if (recipientType === 'department') {
+                const departmentId = document.getElementById('departmentSelect').value;
+                if (!departmentId) {
+                    showToast('Please select a department', 'warning');
+                    btn.disabled = false;
+                    btn.innerHTML = 'Upload Document';
+                    return;
+                }
+                formData.append('restricted_department_id', departmentId);
+            } else if (recipientType === 'specific') {
+                const checkboxes = document.querySelectorAll('#userChecklist input.user-checkbox:checked');
+                if (checkboxes.length === 0) {
+                    showToast('Please select at least one user', 'warning');
+                    btn.disabled = false;
+                    btn.innerHTML = 'Upload Document';
+                    return;
+                }
+                checkboxes.forEach(cb => {
+                    formData.append('selected_users', cb.value);
+                });
+            }
+
+            try {
+                const response = await fetch('/upload_document', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    showToast(`Document "${title}" uploaded!`, 'success');
+                    document.getElementById('docTitle').value = '';
+                    document.getElementById('docDescription').value = '';
+                    document.getElementById('docContent').value = '';
+                    document.getElementById('recipientType').value = 'all';
+                    document.getElementById('departmentSelectionDiv').style.display = 'none';
+                    document.getElementById('userSelectionDiv').style.display = 'none';
+                    loadDocuments();
+                } else {
+                    showToast('Upload failed: ' + (data.error || data.message), 'error');
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                showToast('Upload failed: ' + error.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Upload Document';
+            }
+        }
+
+        async function loadDocuments() {
+            try {
+                const response = await fetch('/get_documents', { credentials: 'include' });
+                const data = await response.json();
+                const docsDiv = document.getElementById('documentsList');
+                
+                if (!data.documents || data.documents.length === 0) {
+                    docsDiv.innerHTML = '<div class="empty-state">No documents available at your current access level</div>';
+                    return;
+                }
+                
+                let html = '';
+                data.documents.forEach(doc => {
+                    html += `
+                        <div class="doc-item">
+                            <div class="doc-title">
+                                ${escapeHtml(doc.title)}
+                            </div>
+                            <div class="doc-meta">
+                                <span class="classification-badge ${doc.classification}">${doc.classification.toUpperCase()}</span>
+                                <span>Uploader: ${escapeHtml(doc.uploader_name)}</span>
+                                <span>Views: ${doc.download_count}</span>
+                            </div>
+                            ${doc.description ? `<div style="font-size: 11px; color: var(--gray); margin-top: 6px;">${escapeHtml(doc.description.substring(0, 80))}${doc.description.length > 80 ? '...' : ''}</div>` : ''}
+                            <button class="btn-view" onclick="viewDocument(${doc.id})">Read Document</button>
+                        </div>
+                    `;
+                });
+                docsDiv.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading documents:', error);
+                document.getElementById('documentsList').innerHTML = '<div class="empty-state">Error loading documents</div>';
+            }
+        }
+
+        async function viewDocument(docId) {
+            try {
+                const response = await fetch(`/view_document/${docId}`, { credentials: 'include' });
+                const data = await response.json();
+                
+                if (data.error) {
+                    showToast(data.error, 'error');
+                    return;
+                }
+                
+                document.getElementById('modalTitle').textContent = data.title;
+                document.getElementById('modalClass').textContent = data.classification;
+                document.getElementById('modalClass').className = `classification-badge ${data.classification.toLowerCase()}`;
+                document.getElementById('modalUploader').textContent = data.uploader;
+                document.getElementById('modalDate').textContent = new Date(data.upload_date).toLocaleString();
+                document.getElementById('modalViews').textContent = data.views;
+                
+                if (data.description) {
+                    document.getElementById('modalDescription').style.display = 'block';
+                    document.getElementById('modalDescription').innerHTML = escapeHtml(data.description);
+                } else {
+                    document.getElementById('modalDescription').style.display = 'none';
+                }
+                
+                document.getElementById('modalContent').textContent = data.content || 'No content available';
+                document.getElementById('docModal').style.display = 'flex';
+            } catch (error) {
+                console.error('Error viewing document:', error);
+                showToast('Error viewing document', 'error');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('docModal').style.display = 'none';
+        }
+
+        async function loadRequests() {
+            try {
+                const response = await fetch('/get_access_requests', { credentials: 'include' });
+                const data = await response.json();
+                const requestsList = document.getElementById('requestsList');
+                
+                const pendingRequests = data.requests ? data.requests.filter(r => 
+                    r.status === 'pending' && r.requested_level === 'Medium'
+                ) : [];
+                
+                if (pendingRequests.length > 0) {
+                    let html = '';
+                    pendingRequests.forEach(req => {
+                        html += `
+                            <div class="request-card">
+                                <div class="request-header">
+                                    <span class="request-user">${escapeHtml(req.username)}</span>
+                                    <span class="request-level">${req.requested_level}</span>
+                                </div>
+                                <div class="request-reason"><strong>Reason:</strong> ${escapeHtml(req.reason)}</div>
+                                <div class="request-date">${new Date(req.timestamp).toLocaleString()}</div>
+                                <button onclick="reviewRequest('${req.id}', 'approved')" class="btn-approve">Approve (2 hours)</button>
+                                <button onclick="reviewRequest('${req.id}', 'rejected')" class="btn-reject">Reject</button>
+                            </div>
+                        `;
+                    });
+                    requestsList.innerHTML = html;
+                } else {
+                    requestsList.innerHTML = '<div class="empty-state">No pending employee requests</div>';
+                }
+            } catch (error) {
+                console.error('Error loading requests:', error);
+                const requestsList = document.getElementById('requestsList');
+                if (requestsList) requestsList.innerHTML = '<div class="empty-state">Error loading requests</div>';
+            }
+        }
+
+        async function loadMyRequests() {
+            try {
+                const response = await fetch('/get_access_requests', { credentials: 'include' });
+                const data = await response.json();
+                const requestsDiv = document.getElementById('myRequests');
+                
+                const currentUsername = document.getElementById('username').textContent;
+                
+                const myRequests = data.requests ? data.requests.filter(r => 
+                    r.requested_level === 'High' && r.username === currentUsername
+                ) : [];
+                
+                if (myRequests.length === 0) {
+                    requestsDiv.innerHTML = '<div class="empty-state">No requests yet</div>';
+                    return;
+                }
+                
+                let html = '';
+                myRequests.forEach(req => {
+                    let statusClass = '';
+                    switch(req.status) {
+                        case 'pending':
+                            statusClass = 'status-pending';
+                            break;
+                        case 'approved':
+                            statusClass = 'status-approved';
+                            break;
+                        case 'rejected':
+                            statusClass = 'status-rejected';
+                            break;
+                        case 'expired':
+                            statusClass = 'status-expired';
+                            break;
+                        case 'revoked':
+                            statusClass = 'status-revoked';
+                            break;
+                        default:
+                            statusClass = 'status-pending';
+                    }
+                    
+                    html += `
+                        <div class="request-item">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                <strong>HIGH Access</strong>
+                                <span class="request-status ${statusClass}">${req.status.toUpperCase()}</span>
+                            </div>
+                            <div style="font-size: 11px; color: var(--gray); margin-bottom: 4px;">
+                                ${new Date(req.timestamp).toLocaleString()}
+                            </div>
+                            <div style="font-size: 11px;"><strong>Reason:</strong> ${escapeHtml(req.reason)}</div>
+                            ${req.notes ? `<div style="font-size: 11px; margin-top: 4px;">Notes: ${escapeHtml(req.notes)}</div>` : ''}
+                            ${req.expires_at && req.status === 'approved' ? 
+                                `<div style="font-size: 11px; margin-top: 4px;">Expires: ${new Date(req.expires_at).toLocaleString()}</div>` : ''}
+                        </div>
+                    `;
+                });
+                requestsDiv.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading my requests:', error);
+                document.getElementById('myRequests').innerHTML = '<div class="empty-state">Error loading requests</div>';
+            }
+        }
+
+        async function reviewRequest(requestId, decision) {
+            const notes = prompt(`Enter notes for ${decision}:`);
+            if (notes === null) return;
+            
+            try {
+                const response = await fetch('/review_request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ request_id: requestId, decision, notes }),
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (data.success || data.message) {
+                    showToast(data.message || 'Request processed successfully', 'success');
+                    loadRequests();
+                    loadMyRequests();
+                } else {
+                    showToast(data.error || 'Failed to process request', 'error');
+                }
+            } catch (error) {
+                showToast('Failed to review request', 'error');
+            }
+        }
+
+        async function requestHighAccess() {
+            const reason = document.getElementById('highAccessReason').value.trim();
+            if (!reason) {
+                showToast('Please provide a reason for HIGH access request', 'warning');
+                return;
+            }
+            
+            const btn = document.getElementById('requestHighBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<div class="spinner"></div> Submitting...';
+            
+            try {
+                const response = await fetch('/request_access', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ requested_level: "High", reason: reason }),
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    showToast('HIGH access request submitted! Waiting for Admin approval.', 'success');
+                    document.getElementById('highAccessReason').value = '';
+                    loadMyRequests();
+                } else {
+                    showToast('Failed to submit request: ' + (data.message || 'Unknown error'), 'error');
+                }
+            } catch (error) {
+                showToast('Failed to submit request', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Submit Request to Admin';
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            if (message.toLowerCase().includes('yes') && (message.toLowerCase().includes('csv') || message.toLowerCase().includes('pdf'))) {
+                if (pendingReportData) {
+                    await handleReportFromChat(message);
+                    input.value = '';
+                    return;
+                } else {
+                    addMessage('Please ask a question about your data first.', 'ai');
+                    input.value = '';
+                    return;
+                }
+            }
+            
+            addMessage(message, 'user');
+            input.value = '';
+            
+            const typingIndicator = document.getElementById('typingIndicator');
+            typingIndicator.style.display = 'flex';
+            
+            try {
+                let requestBody = { question: message };
+                if (typeof currentDocId !== 'undefined' && currentDocId) {
+                    requestBody.doc_id = currentDocId;
+                }
+                
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody),
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Server error: HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                typingIndicator.style.display = 'none';
+                
+                if (data.answer) {
+                    addMessage(data.answer, 'ai');
+                } else if (data.error) {
+                    addMessage('Error: ' + data.error, 'ai');
+                }
+                
+                if (data.suggest_report) {
+                    const safeContext = {
+                        doc_content: (data.report_context && data.report_context.doc_content) ? data.report_context.doc_content : '',
+                        ai_answer: data.answer || '',
+                        query: message,
+                        user_dept: (data.report_context && data.report_context.user_dept) ? data.report_context.user_dept : '',
+                        access_level: (data.report_context && data.report_context.access_level) ? data.report_context.access_level : 'Medium',
+                        salary_data: (data.report_context && data.report_context.salary_data) ? data.report_context.salary_data : '',
+                        agg_data: (data.report_context && data.report_context.agg_data) ? data.report_context.agg_data : '',
+                        extracted_data: (data.report_context && data.report_context.extracted_data) ? data.report_context.extracted_data : []
+                    };
+                    
+                    pendingReportData = {
+                        doc_id: data.doc_id || (typeof currentDocId !== 'undefined' ? currentDocId : null),
+                        query: message,
+                        ai_answer: data.answer,
+                        report_context: safeContext
+                    };
+                    
+                    setTimeout(() => {
+                        addMessage('Would you like me to generate a file from this data? Reply "yes csv" or "yes pdf".', 'ai');
+                    }, 500);
+                }
+                
+            } catch (error) {
+                console.error("Chat Error Detail:", error);
+                typingIndicator.style.display = 'none';
+                addMessage(`Execution Error: ${error.message}`, 'ai');
+            }
+        }
+
+        async function handleReportFromChat(message) {
+            let format = 'csv';
+            if (message.toLowerCase().includes('pdf')) {
+                format = 'pdf';
+            } else if (message.toLowerCase().includes('csv')) {
+                format = 'csv';
+            }
+            
+            addMessage('Generating ' + format.toUpperCase() + ' report...', 'ai');
+            
+            try {
+                if (format === 'csv') {
+                    const csvResponse = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            question: 'Based on our conversation, give me ONLY the data as CSV format. No explanations, no markdown, just pure CSV with headers on the first line.'
+                        }),
+                        credentials: 'include'
+                    });
+                    const csvData = await csvResponse.json();
+                    
+                    if (csvData.answer) {
+                        let csvText = csvData.answer;
+                        csvText = csvText.replace(/```csv\n?/g, '').replace(/```\n?/g, '').trim();
+                        
+                        const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8;' });
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `report_${new Date().toISOString().split('T')[0]}.csv`;
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(url);
+                        addMessage('CSV report downloaded successfully!', 'ai');
+                    } else {
+                        addMessage('Failed to generate CSV report', 'ai');
+                    }
+                } else {
+                    const safeReportContext = {
+                        doc_content: pendingReportData?.report_context?.doc_content || '',
+                        ai_answer: pendingReportData?.ai_answer || pendingReportData?.report_context?.ai_answer || '',
+                        query: pendingReportData?.query || '',
+                        user_dept: pendingReportData?.report_context?.user_dept || '',
+                        access_level: pendingReportData?.report_context?.access_level || 'Medium',
+                        salary_data: pendingReportData?.report_context?.salary_data || '',
+                        agg_data: pendingReportData?.report_context?.agg_data || '',
+                        extracted_data: pendingReportData?.report_context?.extracted_data || []
+                    };
+                    
+                    const response = await fetch('/api/generate_report_from_analysis', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            analysis_data: {
+                                answer: safeReportContext.ai_answer,
+                                analysis: safeReportContext.ai_answer,
+                                report_type: 'general',
+                                extracted_data: safeReportContext.extracted_data
+                            }, 
+                            report_type: format, 
+                            title: 'Analysis Report', 
+                            include_charts: true,
+                            report_context: safeReportContext
+                        }),
+                        credentials: 'include'
+                    });
+                    
+                    if (response.ok) {
+                        const blob = await response.blob();
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `report_${new Date().toISOString().split('T')[0]}.pdf`;
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(url);
+                        addMessage('PDF report downloaded successfully!', 'ai');
+                    } else {
+                        const error = await response.json();
+                        addMessage('PDF generation failed: ' + (error.error || 'Unknown error'), 'ai');
+                    }
+                }
+            } catch (error) {
+                console.error('Report generation error:', error);
+                addMessage('Failed to generate report: ' + error.message, 'ai');
+            } finally {
+                pendingReportData = null;
+            }
+        }
+
+        document.getElementById('chatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('docModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+// ORCHESTRATOR: Orchestrates execution threads independently without inter-calling loops
+// In window.onload, add this after the existing setInterval:
+
+window.onload = () => {
+    if (window.dashboardInterval) clearInterval(window.dashboardInterval);
+
+    // Initial load
+    checkAccessStatus();
+    loadDocuments();
+    loadRequests();
+    loadMyRequests();
+    document.getElementById('chatInput').focus();
+
+    // Heartbeat: Check status + refresh data
+    window.dashboardInterval = setInterval(async () => {
+        await checkAccessStatus();
+        
+        // Refresh these directly since they are always visible in your sidebar
+        loadDocuments();
+        loadRequests();
+        loadMyRequests();
+    }, 30000);
+};
+
+// Helper to check if a tab is active
+function isTabVisible(tabId) {
+    const tab = document.getElementById(tabId);
+    return tab ? tab.classList.contains('active') : true; // Default to true if no tabs used
+}
+
+        const username = document.getElementById('username').textContent;
+        document.getElementById('userAvatar').textContent = username.charAt(0).toUpperCase();
+    </script>
+</body>
+</html>
