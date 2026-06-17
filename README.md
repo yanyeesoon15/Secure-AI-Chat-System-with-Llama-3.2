@@ -31,6 +31,7 @@ This downloads approximately 2 GB. Ensure you have enough disk space.
 4. Report Generation code
 pip install pycryptodome
 pip install flask werkzeug requests openpyxl reportlab PyPDF2 python-docx pycryptodome chromadb
+All the file in VS code show like this:
 <img width="410" height="495" alt="image" src="https://github.com/user-attachments/assets/0031432d-56d8-4ef8-8815-2bc95ae1c02a" />
 
 Running the Application
