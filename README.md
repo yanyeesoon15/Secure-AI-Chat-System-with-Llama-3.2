@@ -64,6 +64,7 @@ The system generate default users and organizational department so user can have
 User can add your own user to test.
 All the password of default is : demo123
 Administrator username and password: admin/admin123
+There have several test documents for user to test in (uploads) document
 
 Troubleshooting
 1. AI service is not running error in chat
