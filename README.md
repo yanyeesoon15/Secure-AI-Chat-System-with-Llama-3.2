@@ -38,11 +38,9 @@ Open a terminal and run: ollama serve
 Keep this terminal open. Ollama must be running before you start the Flask app.
 
 Step 2 Start the Flask server
-In a new terminal (VS Code): python app.py
+In a new terminal (with your virtual environment activated):
 You should see output like:
-=======================================================================
 SECURE AI CHAT SYSTEM - WITH DATABASE ENCRYPTION
-=======================================================================
 Default Users:
   admin / admin123 - System Admin
   ceo / ceo123 - CEO
