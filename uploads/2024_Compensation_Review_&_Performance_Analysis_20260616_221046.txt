@@ -1,0 +1,315 @@
+2024 COMPENSATION REVIEW & PERFORMANCE ANALYSIS
+
+1. EXECUTIVE SUMMARY
+
+Review Period: January - December 2024
+Total Employees: 340 (100% reviewed)
+Total Salary Budget: RM 12,500,000 (10% increase from 2023)
+Average Salary Increase: 5.8% (3.2% market average)
+Performance Ratings: 4.0/5 average (up from 3.8)
+
+2. PERFORMANCE DISTRIBUTION
+
+Overall Ratings Distribution:
+
+| Rating | Category | Count | Percentage | Trend (2023) |
+|--------|----------|-------|------------|--------------|
+| 5 | Outstanding | 34 | 10% | +2% |
+| 4 | Exceeds Expectations | 85 | 25% | +3% |
+| 3 | Meets Expectations | 170 | 50% | -2% |
+| 2 | Below Expectations | 34 | 10% | -2% |
+| 1 | Unsatisfactory | 17 | 5% | -1% |
+
+Department Performance Comparison:
+
+| Department | Average Rating | Top Performers | Improvement Areas |
+|------------|---------------|----------------|-------------------|
+| Marketing | 4.2/5 | 8 (out of 12) | Content creation |
+| IT | 4.1/5 | 15 (out of 30) | Documentation |
+| Finance | 4.0/5 | 10 (out of 25) | Reporting accuracy |
+| HR | 4.3/5 | 5 (out of 10) | Employee engagement |
+| Operations | 3.8/5 | 12 (out of 40) | Process efficiency |
+
+3. TOP PERFORMERS BY DEPARTMENT
+
+Marketing Department (12 employees)
+
+Employee: Mark Lee (Marketing Manager)
+- Rating: 5/5
+- Key Achievements:
+  * Increased market share by 8%
+  * Launched 3 successful campaigns
+  * Achieved 200% ROI on Q4 campaign
+  * Mentored 2 junior staff
+- Bonus: RM 18,000 (150% target)
+- Promotion: Senior Manager (effective Jan 2025)
+- Salary Increase: 8.5% (RM 12,000 → RM 13,020)
+
+Employee: Amanda Goh (Senior Marketing Executive)
+- Rating: 5/5
+- Key Achievements:
+  * Exceeded targets by 30%
+  * Created viral social campaign (500,000+ views)
+  * Managed 3 major client accounts
+  * Implemented new analytics system
+- Bonus: RM 6,750 (150% target)
+- Promotion: Potential for 2025
+- Salary Increase: 8.0% (RM 4,500 → RM 4,860)
+
+Employee: Kevin Raj (Marketing Executive)
+- Rating: 4/5
+- Key Achievements:
+  * 15% conversion rate increase
+  * 3 award-winning designs
+  * Reduced costs by 10%
+  * Excellent client feedback
+- Bonus: RM 5,760 (120% target)
+- Salary Increase: 6.0% (RM 4,800 → RM 5,088)
+
+HR Department (10 employees)
+
+Employee: Sarah Lim (HR Manager)
+- Rating: 5/5
+- Key Achievements:
+  * Reduced turnover by 15%
+  * Implemented new talent management system
+  * Increased engagement score to 82%
+  * 95% training program satisfaction
+- Bonus: RM 17,250 (150% target)
+- Promotion: Senior HR Manager
+- Salary Increase: 8.5% (RM 11,500 → RM 12,478)
+
+Employee: James Tan (HR Senior Executive)
+- Rating: 4/5
+- Key Achievements:
+  * 95% compliance rate
+  * Launched wellness program
+  * Reduced recruitment time by 30%
+  * 92% employee satisfaction
+- Bonus: RM 5,040 (120% target)
+- Salary Increase: 6.0% (RM 4,200 → RM 4,452)
+
+Employee: Nurul Azizah (HR Executive)
+- Rating: 3/5
+- Key Achievements:
+  * 100% compliance
+  * Organized 5 training programs
+  * Improved engagement activities
+  * Completed all tasks on time
+- Bonus: RM 4,500 (100% target)
+- Salary Increase: 4.0% (RM 4,500 → RM 4,680)
+
+IT Department (30 employees)
+
+Employee: Jason Ng (IT Manager)
+- Rating: 4/5
+- Key Achievements:
+  * 99.9% system uptime
+  * Cloud migration completed
+  * Cost savings RM 100,000
+  * 25 projects delivered
+- Bonus: RM 21,000 (150% target)
+- Salary Increase: 7.5% (RM 14,000 → RM 15,050)
+
+Employee: Ahmad Ismail (Senior Developer)
+- Rating: 5/5
+- Key Achievements:
+  * Implemented AI solutions
+  * Reduced processing time by 40%
+  * 2 patents pending
+  * Mentored 3 developers
+- Bonus: RM 7,500 (150% target)
+- Salary Increase: 8.5% (RM 5,000 → RM 5,425)
+
+Employee: Linda Chong (Developer)
+- Rating: 4/5
+- Key Achievements:
+  * 30% performance improvement
+  * 5 major features delivered
+  * 100% code quality
+- Bonus: RM 6,240 (120% target)
+- Salary Increase: 6.0% (RM 5,200 → RM 5,512)
+
+Finance Department (25 employees)
+
+Employee: Robert Lim (Finance Manager)
+- Rating: 5/5
+- Key Achievements:
+  * Cost savings RM 200,000
+  * Automated reporting system
+  * 100% compliance
+  * 24/7 financial support
+- Bonus: RM 19,500 (150% target)
+- Salary Increase: 8.5% (RM 13,000 → RM 14,105)
+
+Employee: Mei Ling (Finance Executive)
+- Rating: 4/5
+- Key Achievements:
+  * 99.9% accuracy
+  * 20% faster reporting
+  * Team collaboration
+  * Audit efficiency
+- Bonus: RM 5,760 (120% target)
+- Salary Increase: 6.0% (RM 4,800 → RM 5,088)
+
+Employee: Fazrul Hisham (Finance Junior Executive)
+- Rating: 3/5
+- Key Achievements:
+  * 98% accuracy
+  * Learning progress
+  * Support team
+  * Quick learner
+- Bonus: RM 4,500 (100% target)
+- Salary Increase: 4.0% (RM 4,500 → RM 4,680)
+
+4. COMPENSATION ANALYSIS
+
+Salary Benchmarking (vs Market):
+
+| Grade | Position | Our Range | Market Range | Our Position |
+|-------|----------|-----------|--------------|--------------|
+| G1 | Executive | RM 35K-55K | RM 30K-50K | 75th Percentile |
+| G2 | Sr. Manager | RM 18K-32K | RM 16K-28K | 70th Percentile |
+| G3 | Manager | RM 10K-18K | RM 9K-16K | 65th Percentile |
+| G4 | Senior Staff | RM 6K-10K | RM 5.5K-9K | 65th Percentile |
+| G5 | Staff | RM 3.5K-6.5K | RM 3K-6K | 60th Percentile |
+
+Company Position Summary:
+- Executive: 75th percentile (market leader)
+- Management: 65th percentile (competitive)
+- Staff: 60th percentile (above average)
+- Overall: 65th percentile (competitive market position)
+
+Cost Impact:
+
+Budget Analysis 2024 vs 2023:
+
+| Category | 2023 Actual | 2024 Actual | Change |
+|----------|-------------|-------------|---------|
+| Salary Base | RM 11,300,000 | RM 12,500,000 | +10.6% |
+| Bonuses | RM 850,000 | RM 1,200,000 | +41.2% |
+| Benefits | RM 2,400,000 | RM 2,800,000 | +16.7% |
+| Total | RM 14,550,000 | RM 16,500,000 | +13.4% |
+
+5. PROMOTIONS & SUCCESSION PLANNING
+
+Promotions 2024:
+
+| Employee | Department | From | To | Effective Date |
+|----------|------------|------|-----|----------------|
+| Mark Lee | Marketing | Marketing Manager | Senior Manager | Jan 2025 |
+| Sarah Lim | HR | HR Manager | Senior HR Manager | Jan 2025 |
+| Jason Ng | IT | IT Manager | Senior IT Manager | Jan 2025 |
+| Robert Lim | Finance | Finance Manager | Senior Finance Manager | Jan 2025 |
+| Amanda Goh | Marketing | Senior Executive | Assistant Manager | Jan 2025 |
+| James Tan | HR | Senior Executive | Assistant Manager | Jan 2025 |
+| Ahmad Ismail | IT | Senior Developer | Technical Lead | Jan 2025 |
+
+Succession Planning:
+
+High Potential Candidates (2025):
+
+| Candidate | Current Role | Target Role | Timeline |
+|-----------|--------------|-------------|----------|
+| Amanda Goh | Marketing Senior Exec | Marketing Manager | 12-18 months |
+| James Tan | HR Senior Exec | HR Manager | 12-18 months |
+| Ahmad Ismail | Senior Developer | Tech Lead/Manager | 12-18 months |
+| Mei Ling | Finance Executive | Finance Manager | 18-24 months |
+
+6. PERFORMANCE IMPROVEMENT PLANS
+
+Below Expectations (Rating 2):
+- 34 employees (10%)
+- Action: 90-day improvement plan
+- Success rate: 60% (anticipated)
+- Total training budget: RM 50,000
+
+Unsatisfactory (Rating 1):
+- 17 employees (5%)
+- Action: 60-day PIP + counseling
+- Success rate: 40% (anticipated)
+- Potential terminations: 10 employees
+
+Performance Improvement Support:
+- Coaching program: 8 sessions
+- Skill enhancement: Training budget
+- Mentorship: Senior staff allocation
+- Regular reviews: Weekly
+
+7. COMPENSATION RECOMMENDATIONS 2025
+
+Salary Adjustments:
+- Base salary increase: 5% (market average)
+- Performance-based: 0-8% additional
+- Budget: RM 13,125,000 (5% increase)
+- Effective: January 1, 2025
+
+Bonus Structure 2025:
+- Guaranteed bonus: 1 month
+- Performance bonus: 0-4 months
+- Departmental bonus: 0-2 months
+- Individual bonus: 0-3 months
+- Total potential: 0-10 months
+
+Benefits Enhancements 2025:
+- Medical coverage: +20% (RM 12,000 → RM 18,000)
+- Dental coverage: +25% (RM 800 → RM 1,000)
+- Mental health: 12 sessions (vs 10)
+- Wellness budget: RM 500/year
+
+Special Compensation:
+- Retention bonus: RM 5,000-15,000
+- Signing bonus: RM 10,000-20,000
+- Referral bonus: RM 2,000-5,000
+
+8. RECOMMENDATIONS
+
+Short-term (2025):
+1. Implement performance-based bonus structure
+2. Increase benefits package to match market
+3. Launch leadership development program
+4. Improve engagement activities
+5. Reduce turnover by 3% (12% target)
+
+Medium-term (2026):
+1. Introduce flexible benefits system
+2. Expand wellness programs
+3. Develop succession pipeline
+4. Enhance digital HR systems
+5. Improve diversity & inclusion
+
+Long-term (2027+):
+1. Market leader compensation
+2. Best place to work recognition
+3. Employee ownership program
+4. Global mobility program
+5. Innovation incentives
+
+9. COST PROJECTIONS 2025
+
+Budget Requirements:
+
+| Category | 2024 Budget | 2025 Projected | Increase |
+|----------|-------------|----------------|----------|
+| Salaries | RM 12,500,000 | RM 13,125,000 | 5% |
+| Bonuses | RM 1,200,000 | RM 1,500,000 | 25% |
+| Benefits | RM 2,800,000 | RM 3,200,000 | 14% |
+| Training | RM 800,000 | RM 1,000,000 | 25% |
+| Total | RM 17,300,000 | RM 18,825,000 | 8.8% |
+
+Budgeted ROI:
+- Productivity increase: RM 500,000
+- Retention savings: RM 300,000
+- New capabilities: RM 400,000
+Total ROI: RM 1,200,000
+
+10. APPROVALS
+
+This document requires approval from:
+- CEO: □ Approved □ Not Approved
+- CFO: □ Approved □ Not Approved
+- HR Director: □ Approved □ Not Approved
+
+Next Review: December 2025
+
+END OF DOCUMENT

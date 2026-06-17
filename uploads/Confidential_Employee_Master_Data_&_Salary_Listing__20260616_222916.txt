@@ -1,0 +1,215 @@
+CONFIDENTIAL EMPLOYEE MASTER DATA & SALARY LISTING 2024
+
+================================================================================
+CLASSIFICATION: HIGH - STRICTLY CONFIDENTIAL
+================================================================================
+Distribution: CEO, HR Director, CFO Only
+Date: December 2024
+Total Employees: 10
+Total Monthly Payroll: RM 86,000
+Total Annual Payroll: RM 1,032,000
+
+================================================================================
+EMPLOYEE MASTER DATA TABLE
+================================================================================
+
+ID | Username | Full Name | IC Number | Bank Name | Bank Account | Salary (RM) | Position | Department
+---|----------|-----------|-----------|-----------|--------------|-------------|----------|------------
+1 | admin | System Admin | 800101-14-1234 | Maybank | 1122334455 | 15,000 | System Administrator | IT
+2 | huang | Wong Wei Ming | 750505-10-5678 | CIMB Bank | 5566778899 | 20,000 | CEO | Executive
+3 | john | Tan Sri John Tan | 750505-10-5678 | Public Bank | 5563254125 | 13,000 | CEO | Executive
+4 | lisa | Lisa Wong | 800808-14-9012 | Maybank | 789012345678 | 13,000 | Deputy CEO | Executive
+5 | mark | Mark Lee | 820515-01-2345 | Public Bank | 345678901234 | 6,000 | Marketing Manager | Marketing
+6 | amanda | Amanda Goh | 940101-10-6789 | Maybank | 456789012345 | 3,500 | Marketing Executive | Marketing
+7 | kevin | Kevin Raj | 950606-14-0123 | RHB Bank | 567890123456 | 3,000 | Marketing Executive | Marketing
+8 | sarah | Sarah Lim | 830303-05-3456 | Maybank | 678901234567 | 6,500 | HR Manager | Human Resources
+9 | james | James Tan | 960808-10-7890 | CIMB Bank | 789012345678 | 3,800 | HR Senior Executive | Human Resources
+10 | nurul | Nurul Azizah | 971212-14-2345 | Bank Rakyat | 890123456789 | 3,200 | HR Executive | Human Resources
+
+================================================================================
+DETAILED EMPLOYEE PROFILES
+================================================================================
+
+EMPLOYEE 1: System Admin (admin)
+-----------------------------------------
+IC: 800101-14-1234 | DOB: Jan 1, 1980 | Age: 44
+Department: IT | Position: System Administrator
+Hire Date: Jan 1, 2020 | Service: 4 years
+Bank: Maybank | Account: 1122334455
+Basic Salary: RM 15,000 | Annual: RM 180,000
+Bonus Potential: RM 45,000 | Total Package: RM 225,000
+Allowances: Transport RM 300, Mobile RM 100
+Benefits: Medical RM 50,000, Life Insurance 3x Salary
+Leave: Annual 18 days, Medical 14 days
+
+EMPLOYEE 2: Wong Wei Ming (huang)
+-----------------------------------------
+IC: 750505-10-5678 | DOB: May 5, 1975 | Age: 49
+Department: Executive | Position: CEO
+Hire Date: Jan 15, 2015 | Service: 9 years
+Bank: CIMB Bank | Account: 5566778899
+Basic Salary: RM 20,000 | Annual: RM 240,000
+Bonus Potential: RM 80,000 | Total Package: RM 320,000
+Allowances: Car RM 3,000, Housing RM 5,000, Driver RM 1,000
+Benefits: Medical RM 100,000, Life Insurance 5x Salary
+Leave: Annual 28 days, Medical 21 days
+
+EMPLOYEE 3: Tan Sri John Tan (john)
+-----------------------------------------
+IC: 750505-10-5678 | DOB: May 5, 1975 | Age: 49
+Department: Executive | Position: CEO
+Hire Date: Jan 1, 2010 | Service: 14 years
+Bank: Public Bank | Account: 5563254125
+Basic Salary: RM 13,000 | Annual: RM 156,000
+Bonus Potential: RM 52,000 | Total Package: RM 208,000
+Allowances: Car RM 3,000, Housing RM 5,000
+Benefits: Medical RM 100,000, Life Insurance 5x Salary
+Leave: Annual 28 days, Medical 21 days
+
+EMPLOYEE 4: Lisa Wong (lisa)
+-----------------------------------------
+IC: 800808-14-9012 | DOB: Aug 8, 1980 | Age: 44
+Department: Executive | Position: Deputy CEO
+Hire Date: Jun 1, 2016 | Service: 8 years
+Bank: Maybank | Account: 789012345678
+Basic Salary: RM 13,000 | Annual: RM 156,000
+Bonus Potential: RM 52,000 | Total Package: RM 208,000
+Allowances: Car RM 3,000, Housing RM 5,000
+Benefits: Medical RM 100,000, Life Insurance 5x Salary
+Leave: Annual 28 days, Medical 21 days
+
+EMPLOYEE 5: Mark Lee (mark)
+-----------------------------------------
+IC: 820515-01-2345 | DOB: May 15, 1982 | Age: 42
+Department: Marketing | Position: Marketing Manager
+Hire Date: Mar 1, 2018 | Service: 6 years
+Bank: Public Bank | Account: 345678901234
+Basic Salary: RM 6,000 | Annual: RM 72,000
+Bonus Potential: RM 24,000 | Total Package: RM 96,000
+Allowances: Car RM 1,000, Travel RM 800, Mobile RM 100
+Benefits: Medical RM 50,000, Life Insurance 3x Salary
+Leave: Annual 21 days, Medical 14 days
+
+EMPLOYEE 6: Amanda Goh (amanda)
+-----------------------------------------
+IC: 940101-10-6789 | DOB: Jan 1, 1994 | Age: 30
+Department: Marketing | Position: Marketing Executive
+Hire Date: Jul 15, 2020 | Service: 4 years
+Bank: Maybank | Account: 456789012345
+Basic Salary: RM 3,500 | Annual: RM 42,000
+Bonus Potential: RM 10,500 | Total Package: RM 52,500
+Allowances: Transport RM 200, Mobile RM 50
+Benefits: Medical RM 15,000, Life Insurance 2x Salary
+Leave: Annual 14 days, Medical 14 days
+
+EMPLOYEE 7: Kevin Raj (kevin)
+-----------------------------------------
+IC: 950606-14-0123 | DOB: Jun 6, 1995 | Age: 29
+Department: Marketing | Position: Marketing Executive
+Hire Date: Jan 10, 2021 | Service: 3 years
+Bank: RHB Bank | Account: 567890123456
+Basic Salary: RM 3,000 | Annual: RM 36,000
+Bonus Potential: RM 9,000 | Total Package: RM 45,000
+Allowances: Transport RM 200, Mobile RM 50
+Benefits: Medical RM 15,000, Life Insurance 2x Salary
+Leave: Annual 14 days, Medical 14 days
+
+EMPLOYEE 8: Sarah Lim (sarah)
+-----------------------------------------
+IC: 830303-05-3456 | DOB: Mar 3, 1983 | Age: 41
+Department: Human Resources | Position: HR Manager
+Hire Date: May 1, 2017 | Service: 7 years
+Bank: Maybank | Account: 678901234567
+Basic Salary: RM 6,500 | Annual: RM 78,000
+Bonus Potential: RM 26,000 | Total Package: RM 104,000
+Allowances: Car RM 1,000, Professional RM 500, Mobile RM 100
+Benefits: Medical RM 50,000, Life Insurance 3x Salary
+Leave: Annual 21 days, Medical 14 days
+
+EMPLOYEE 9: James Tan (james)
+-----------------------------------------
+IC: 960808-10-7890 | DOB: Aug 8, 1996 | Age: 28
+Department: Human Resources | Position: HR Senior Executive
+Hire Date: Oct 1, 2020 | Service: 4 years
+Bank: CIMB Bank | Account: 789012345678
+Basic Salary: RM 3,800 | Annual: RM 45,600
+Bonus Potential: RM 11,400 | Total Package: RM 57,000
+Allowances: Transport RM 200, Mobile RM 50
+Benefits: Medical RM 30,000, Life Insurance 2x Salary
+Leave: Annual 14 days, Medical 14 days
+
+EMPLOYEE 10: Nurul Azizah (nurul)
+-----------------------------------------
+IC: 971212-14-2345 | DOB: Dec 12, 1997 | Age: 27
+Department: Human Resources | Position: HR Executive
+Hire Date: Aug 15, 2021 | Service: 3 years
+Bank: Bank Rakyat | Account: 890123456789
+Basic Salary: RM 3,200 | Annual: RM 38,400
+Bonus Potential: RM 9,600 | Total Package: RM 48,000
+Allowances: Transport RM 150, Mobile RM 50
+Benefits: Medical RM 15,000, Life Insurance 2x Salary
+Leave: Annual 14 days, Medical 14 days
+
+================================================================================
+SALARY SUMMARY BY DEPARTMENT
+================================================================================
+
+EXECUTIVE DEPARTMENT (3 employees)
+- huang: CEO - RM 20,000/month - RM 320,000/year
+- john: CEO - RM 13,000/month - RM 208,000/year
+- lisa: Deputy CEO - RM 13,000/month - RM 208,000/year
+TOTAL: RM 46,000/month - RM 736,000/year
+
+MARKETING DEPARTMENT (3 employees)
+- mark: Marketing Manager - RM 6,000/month - RM 96,000/year
+- amanda: Marketing Executive - RM 3,500/month - RM 52,500/year
+- kevin: Marketing Executive - RM 3,000/month - RM 45,000/year
+TOTAL: RM 12,500/month - RM 193,500/year
+
+HUMAN RESOURCES DEPARTMENT (3 employees)
+- sarah: HR Manager - RM 6,500/month - RM 104,000/year
+- james: HR Senior Executive - RM 3,800/month - RM 57,000/year
+- nurul: HR Executive - RM 3,200/month - RM 48,000/year
+TOTAL: RM 13,500/month - RM 209,000/year
+
+IT DEPARTMENT (1 employee)
+- admin: System Administrator - RM 15,000/month - RM 225,000/year
+TOTAL: RM 15,000/month - RM 225,000/year
+
+================================================================================
+COMPANY-WIDE SUMMARY
+================================================================================
+
+Total Monthly Payroll: RM 86,000
+Total Annual Payroll: RM 1,032,000
+Total Annual Package (incl. bonuses): RM 1,323,500
+
+Average Salary: RM 8,600
+Median Salary: RM 6,000
+Highest Salary: RM 20,000
+Lowest Salary: RM 3,000
+
+Salary Distribution by Department:
+- Executive: 3 employees - 30% - RM 46,000 (53.5%)
+- Marketing: 3 employees - 30% - RM 12,500 (14.5%)
+- HR: 3 employees - 30% - RM 13,500 (15.7%)
+- IT: 1 employee - 10% - RM 15,000 (17.4%)
+
+Gender Pay Analysis:
+- Male: 5 employees - Average RM 9,540
+- Female: 5 employees - Average RM 7,740
+- Difference: 23.3%
+
+================================================================================
+WARNING: UNAUTHORIZED ACCESS PROHIBITED
+================================================================================
+
+This document contains sensitive employee salary information.
+Disclosure to unauthorized personnel is grounds for immediate termination.
+Legal action may be taken for breach of confidentiality.
+Access is logged and monitored.
+Violation of PDPA may result in fines up to RM 500,000.
+
+================================================================================
+END OF DOCUMENT
+================================================================================
